@@ -1,1 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+
+# Database
+progress/progress.db
+progress/progress.db-wal
+progress/progress.db-shm
+
+# Cache
+data/cache/
+
+# API keys
+*.api-key
+.openrouter-api-key
+
+# Anki
+*.anki2
+*.anki2-wal
+*.anki2-shm
+
+# Generated files
+story.txt
+*.output
+
+# IDE
+.vscode/
+.idea/
+
 AGENTS.md

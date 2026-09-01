@@ -501,13 +501,13 @@ python -c "from lib.jisho_client import JishoClient; c = JishoClient(); print(c.
 
 ## Checklist
 
-- [ ] Create repository structure
-- [ ] Create database schema
-- [ ] Create init_db.py script
-- [ ] Create AnkiConnector class
-- [ ] Create JishoClient class
-- [ ] Create utility scripts
-- [ ] Create .gitignore
-- [ ] Initialize database
-- [ ] Test AnkiConnect connection
-- [ ] Test Jisho lookup
+- [x] Create repository structure
+- [x] Create database schema
+- [x] Create init_db.py script
+- [x] Create AnkiConnector class
+- [x] Create JishoClient class
+- [x] Create utility scripts
+- [x] Create .gitignore
+- [x] Initialize database
+- [x] Test AnkiConnect connection
+- [x] Test Jisho lookup
