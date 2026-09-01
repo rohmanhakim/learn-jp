@@ -4,6 +4,45 @@
 
 Create the content pipeline to fetch vocabulary from JLPT sources and add to both database and Anki.
 
+## Data Sources
+
+| Source | Data | API/Method |
+|--------|------|------------|
+| Tanos.co.uk | JLPT word lists (N5-N1) | Web scraping |
+| Jisho.org | Word readings, meanings, JLPT level, usage notes | REST API |
+| KANJIDIC | Kanji readings (on/kun), meanings, grade, stroke count | XML/Text file |
+
+## Card Structure
+
+### Front Field
+```
+暖かい
+```
+
+### Back Field (HTML)
+```html
+<div class="reading-box">
+    <div class="furigana">あたたかい</div>
+</div>
+<div class="meaning-section">
+    <div class="part-of-speech">I-adjective (keiyoushi)</div>
+    <div class="definition">warm; mild; (pleasantly) hot</div>
+    <div class="notes">ℹ️ 暖かい usu. refers to air temperature</div>
+</div>
+<div class="other-forms">Other forms: 暖かい【あったかい】、温かい【あたたかい】</div>
+<div class="kanji-breakdown">
+    <div class="kanji-character">暖</div>
+    <div class="kanji-meaning">warmth</div>
+    <div class="kanji-readings">On: ダン、ノン | Kun: あたた.か、あたた.かい</div>
+    <div class="kanji-meta">JLPT N1 · Grade 6 · 13 strokes</div>
+</div>
+```
+
+### Tags
+```
+Common-word JLPT-N5 learn-jp
+```
+
 ## Tasks
 
 ### Task 1: Create JLPT Vocabulary Fetcher
@@ -92,7 +131,63 @@ class JLPTFetcher:
 
 ---
 
-### Task 2: Create Seed Anki Script
+### Task 2: Create KANJIDIC Client
+
+**File:** `lib/kanjidic_client.py`
+
+```python
+"""KANJIDIC client for kanji lookup."""
+
+import xml.etree.ElementTree as ET
+from pathlib import Path
+from typing import Optional
+
+
+class KANJIDICClient:
+    """Client for KANJIDIC kanji dictionary."""
+    
+    def __init__(self, data_file: str = None):
+        if data_file is None:
+            # Default to data/kanji/kanjidic.xml
+            data_file = Path(__file__).parent.parent / "data" / "kanji" / "kanjidic.xml"
+        self.data_file = Path(data_file)
+        self.cache = {}
+        
+    def load(self):
+        """Load KANJIDIC data into memory."""
+        # Parse XML and build lookup index
+        # This is a simplified example - actual implementation
+        # depends on KANJIDIC XML format
+        pass
+    
+    def lookup(self, kanji: str) -> Optional[dict]:
+        """Look up a kanji character."""
+        # Return cached or parse from XML
+        if kanji in self.cache:
+            return self.cache[kanji]
+        
+        # Parse and cache
+        result = self._parse_kanji(kanji)
+        if result:
+            self.cache[kanji] = result
+        return result
+    
+    def _parse_kanji(self, kanji: str) -> Optional[dict]:
+        """Parse kanji data from XML."""
+        # Implementation depends on KANJIDIC XML structure
+        # Returns: {
+        #   "character": "暖",
+        #   "on_readings": ["ダン", "ノン"],
+        #   "kun_readings": ["あたた.か", "あたた.かい", ...],
+        #   "meanings": ["warmth"],
+        #   "jlpt": "N1",
+        #   "grade": 6,
+        #   "strokes": 13
+        # }
+        pass
+```
+
+### Task 3: Create Seed Anki Script
 
 **File:** `scripts/seed_anki.py`
 
@@ -110,7 +205,46 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from lib.anki_connector import connector
 from lib.jisho_client import JishoClient
+from lib.kanjidic_client import KANJIDICClient
 from lib.jlpt_fetcher import JLPTFetcher
+
+
+def format_back_field(jisho_data: dict, kanji_data: list) -> str:
+    """Format the back field HTML with enriched data."""
+    # Reading and meanings from Jisho
+    html = f"""
+<div class="reading-box">
+    <div class="furigana">{jisho_data['reading']}</div>
+</div>
+<div class="meaning-section">
+    <div class="part-of-speech">{jisho_data['part_of_speech']}</div>
+    <div class="definition">{jisho_data['meaning']}</div>
+</div>"""
+    
+    # Add usage notes if present
+    if jisho_data.get('notes'):
+        html += f"""
+<div class="notes">ℹ️ {jisho_data['notes']}</div>"""
+    
+    # Add kanji breakdown
+    if kanji_data:
+        html += """
+<div class="kanji-breakdown">"""
+        for kanji in kanji_data:
+            readings = f"On: {', '.join(kanji['on_readings'])}"
+            if kanji['kun_readings']:
+                readings += f" | Kun: {', '.join(kanji['kun_readings'])}"
+            html += f"""
+    <div class="kanji-item">
+        <div class="kanji-character">{kanji['character']}</div>
+        <div class="kanji-meaning">{', '.join(kanji['meanings'])}</div>
+        <div class="kanji-readings">{readings}</div>
+        <div class="kanji-meta">JLPT {kanji['jlpt']} · Grade {kanji['grade']} · {kanji['strokes']} strokes</div>
+    </div>"""
+        html += """
+</div>"""
+    
+    return html
 
 
 def seed_level(level: str, dry_run: bool = False):
@@ -134,27 +268,37 @@ def seed_level(level: str, dry_run: bool = False):
         connector.create_deck(deck_name)
         print(f"Created deck: {deck_name}")
     
-    # Enrich and add each word
+    # Initialize clients
     jisho = JishoClient()
+    kanjidic = KANJIDICClient()
     added = 0
     
     for i, word in enumerate(words):
         print(f"[{i+1}/{len(words)}] Processing: {word}")
         
         # Lookup details via Jisho
-        details = jisho.lookup(word)
+        jisho_data = jisho.lookup(word)
         
-        if not details:
+        if not jisho_data:
             print(f"  Skipping (no Jisho data)")
             continue
         
+        # Lookup kanji breakdown via KANJIDIC
+        kanji_list = []
+        for char in word:
+            # Only lookup actual kanji (not hiragana/katakana)
+            if '\u4e00' <= char <= '\u9fff':  # CJK Unified Ideographs
+                kanji_info = kanjidic.lookup(char)
+                if kanji_info:
+                    kanji_list.append(kanji_info)
+        
         # Format for Anki
         front = word
-        back = f"{details['reading']}<br>{details['meaning']}<br><i>{details['part_of_speech']}</i>"
+        back = format_back_field(jisho_data, kanji_list)
         tags = [f"vocab_{level}", "learn-jp"]
         
         if dry_run:
-            print(f"  Would add: {front} -> {back}")
+            print(f"  Would add: {front} -> {back[:100]}...")
         else:
             result = connector.add_note(deck_name, front, back, tags=tags)
             if result.get("error"):
@@ -294,10 +438,14 @@ python scripts/add_vocab.py --words "勉強する,宿題,先生" --dry-run
 
 ## Checklist
 
-- [ ] Create JLPTFetcher class
-- [ ] Create seed_anki.py script
+- [x] Create JLPTFetcher class
+- [x] Test JLPT vocabulary fetching
+- [ ] Download KANJIDIC data file
+- [ ] Create KANJIDICClient class
+- [ ] Update JishoClient to return richer data (multiple meanings, notes)
+- [ ] Create seed_anki.py script with kanji enrichment
 - [ ] Create add_vocab.py script
-- [ ] Test JLPT vocabulary fetching
+- [ ] Test KANJIDIC kanji lookup
 - [ ] Test seeding to Anki (dry run)
 - [ ] Test adding custom vocabulary
 - [ ] Handle rate limiting

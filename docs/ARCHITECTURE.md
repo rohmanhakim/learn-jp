@@ -77,12 +77,42 @@ Japanese (deck)
 | Source | Data | API/Method |
 |--------|------|------------|
 | Tanos.co.uk | JLPT word lists (N5-N1) | Web scraping |
-| Jisho.org | Word readings, meanings, examples | REST API |
-| Kanken Dojo | Kanji by JLPT level | Web scraping |
+| Jisho.org | Word readings, meanings, JLPT level, usage notes | REST API |
+| KANJIDIC | Kanji readings (on/kun), meanings, grade, stroke count | XML/Text file |
+
+**Card Enrichment Strategy:**
+
+1. **Jisho API** provides vocabulary data:
+   - Word, reading, multiple meanings
+   - Parts of speech, JLPT level
+   - Usage notes and restrictions
+   - Alternative forms
+
+2. **KANJIDIC** provides kanji data:
+   - On'yomi and Kun'yomi readings
+   - Kanji meanings
+   - JLPT level (for kanji)
+   - Grade level (Japanese school grade)
+   - Stroke count
+
+3. **Enrichment flow:**
+   - Initial card created with Jisho data
+   - Kanji breakdown added from KANJIDIC
+   - Cards can be manually enriched later
+
+**Note:** Example sentences are available on Jisho web pages but not via API. For the current version, cards will not include example sentences. Story generator provides contextual reading practice instead.
+
+**Future consideration:** KanjiVG (stroke order diagrams) may be added for drawing practice features.
 
 **Flow:**
 ```
 JLPT Lists → Fetch Script → Raw Data → Processing → DB + Anki
+                    ↓
+              Jisho API (vocabulary)
+                    ↓
+              KANJIDIC (kanji breakdown)
+                    ↓
+              Enriched card → AnkiConnect
 ```
 
 ---
@@ -300,7 +330,6 @@ learn-jp/
 ├── scripts/
 │   ├── seed_anki.py             # Initial vocabulary seeding
 │   ├── fetch_jlpt_vocab.py      # Fetch JLPT word lists
-│   ├── fetch_jisho.py           # Jisho API client
 │   ├── add_vocab.py             # Add custom vocabulary
 │   └── hhmmss_to_seconds.py     # Time conversion utility
 │
@@ -308,6 +337,7 @@ learn-jp/
 │   ├── __init__.py
 │   ├── anki_connector.py        # AnkiConnect API wrapper
 │   ├── jisho_client.py          # Jisho API client
+│   ├── kanjidic_client.py       # KANJIDIC kanji lookup
 │   └── jlpt_fetcher.py          # JLPT vocabulary fetcher
 │
 ├── data/
@@ -316,6 +346,7 @@ learn-jp/
 │   │   ├── n4_vocab.json
 │   │   └── ...
 │   └── kanji/                   # Kanji data files
+│       └── kanjidic.xml         # KANJIDIC database
 │
 ├── docs/                        # This documentation
 │   ├── README.md
@@ -330,3 +361,27 @@ learn-jp/
 - `japanese-story-generator` - Story generation, vocabulary parsing, conjugation verification
   - Installed from: `/home/arif/Projects/japanese-story-generator`
   - Classes: `StoryGenerator`, `AnkiVocabParser`, `ConjugationVerifier`, `OpenRouterClient`
+
+---
+
+## Future Considerations
+
+### KanjiVG (Drawing Practice)
+
+**Status:** Not implemented (planned for future version)
+
+**Purpose:** Stroke order diagrams for kanji drawing practice
+
+**Data provided:**
+- SVG stroke order paths
+- Stroke count
+- Stroke grouping
+- Variant character forms
+
+**Potential use case:**
+- Drawing practice feature with OCR validation
+- Stroke-by-stroke feedback
+- Animated stroke order display
+
+**Source:** https://kanjivg.tagaini.net/
+**License:** Creative Commons Attribution-ShareAlike 3.0

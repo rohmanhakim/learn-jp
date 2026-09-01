@@ -407,6 +407,31 @@ WHERE word = '雪';
 
 ---
 
+## Data Sources for Vocabulary Enrichment
+
+### Jisho API
+Provides vocabulary data:
+- Word, reading, multiple meanings
+- Parts of speech, JLPT level
+- Usage notes and restrictions
+- Alternative forms
+
+### KANJIDIC
+Provides kanji data:
+- On'yomi and Kun'yomi readings
+- Kanji meanings
+- JLPT level (for kanji)
+- Grade level (Japanese school grade)
+- Stroke count
+
+### Example Sentence Gap
+Example sentences are available on Jisho web pages but not via API. For the current version:
+- Cards will not include example sentences
+- Story generator provides contextual reading practice instead
+- Manual enrichment is possible via AnkiConnect update
+
+---
+
 ## Migration Notes
 
 - Database is created by `scripts/init_db.py`
