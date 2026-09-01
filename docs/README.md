@@ -73,6 +73,7 @@ docs/
 ├── ANKI-INTEGRATION.md            # AnkiConnect API details
 ├── OPENROUTER-INTEGRATION.md      # OpenRouter API details
 ├── CONTENT-PIPELINE.md            # JLPT + Jisho fetching
+├── VIOLATION_BASED_LEARNING.md    # Heuristic curriculum approach
 ├── PHASE-0.md                     # Story generator refactoring
 ├── PHASE-1.md                     # Foundation setup
 ├── PHASE-2.md                     # Content pipeline
@@ -113,6 +114,12 @@ docs/
 - Tracks all skills (vocab, kanji, reading, writing)
 - Single source of truth for mastery
 - Enables smart study suggestions
+
+### 6. Violation-Based Learning
+- Uses story generation violations as curriculum
+- Context-driven vocabulary acquisition
+- Self-validating: violations decrease as vocabulary grows
+- See [VIOLATION_BASED_LEARNING.md](VIOLATION_BASED_LEARNING.md) for details
 
 ## External Resources
 

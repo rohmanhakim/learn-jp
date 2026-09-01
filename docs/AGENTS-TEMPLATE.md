@@ -124,6 +124,30 @@ Reading comprehension results.
 | questions_answered | INTEGER | Total questions |
 | questions_correct | INTEGER | Correct answers |
 
+### violation_queue table
+Vocabulary violations from story generation, prioritized for learning.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | INTEGER | Auto-increment primary key |
+| word | TEXT | The violation word (UNIQUE) |
+| reading | TEXT | Hiragana reading |
+| meaning | TEXT | English meaning |
+| pos | TEXT | Part of speech |
+| jlpt_level | TEXT | JLPT level of this word |
+| level_distance | INTEGER | Distance from user's current level |
+| priority | INTEGER | 1=soon, 2=later |
+| frequency | INTEGER | Times seen as violation |
+| status | TEXT | queued/promoted/introduced/skipped |
+| first_seen | DATE | First time seen |
+| last_seen | DATE | Most recent sighting |
+
+**Status flow**: queued → promoted → introduced (or skipped)
+
+**Priority rules**:
+- Priority 1: Level distance = 1-2 (introduce when appropriate)
+- Priority 2: Level distance = 3+ (introduce much later)
+
 # Severity Scale
 
 | Severity | Meaning | Response Time |
@@ -172,6 +196,64 @@ WHERE item_id = 'YOUR_ITEM_ID';
 3. **Read progress/overview.md** - Quick status check
 4. **Suggest study plan** - Based on progress and time
 
+## Hybrid Curriculum (JLPT + Violation Enrichment)
+
+### Philosophy
+- **JLPT curriculum is the foundation** - Follow N5 → N4 → N3 systematically
+- **Violations enrich the curriculum** - Context-driven vocabulary from stories
+- **Algorithm does the judging** - Deterministic grading, not agent judgment
+- **Agent executes decisions** - Follow the algorithm's output exactly
+
+### Daily Flow
+1. **Morning**: Study JLPT vocabulary (standard flashcard review)
+2. **Afternoon**: Generate story → Extract violations → Grade → Enrich deck
+
+### Violation Processing Rules
+
+For each violation from story generation:
+1. Call `grade_violation(violation, current_level)` function
+2. If result = `"introduce_now"` → Add to vocabulary table + Anki
+3. If result = `"queue"` → Add to violation_queue table
+4. If result = `"skip"` → Log and ignore
+
+**Do NOT make your own judgment about whether to add a word.**
+**Always follow the algorithm's output.**
+
+### Grading Algorithm
+
+```python
+def grade_violation(violation: dict, current_level: str) -> str:
+    """
+    Returns: "introduce_now", "queue", or "skip"
+    """
+    word = violation["surface"]
+    
+    # 1. Get JLPT level from database
+    word_level = get_jlpt_level(word)  # From vocabulary or Jisho lookup
+    
+    # 2. Calculate level distance
+    level_order = ["n5", "n4", "n3", "n2", "n1"]
+    current_idx = level_order.index(current_level)
+    word_idx = level_order.index(word_level) if word_level in level_order else 2
+    distance = word_idx - current_idx
+    
+    # 3. Grade by distance
+    if distance <= 1:
+        return "introduce_now"  # Same level or one above
+    elif distance == 2:
+        return "queue"          # Two levels above
+    else:
+        return "skip"           # Too advanced
+```
+
+### Queue Promotion
+
+When user advances to a new JLPT level:
+1. Query queued words at the completed level
+2. Promote words with priority = 1
+3. Add promoted words to vocabulary + Anki
+4. Update status to "introduced"
+
 ## When User is Doing Anki
 
 1. **Get deck stats** - How many cards due?
@@ -206,12 +288,78 @@ WHERE item_id = 'n5-v-001';
 
 ## When User Wants Reading Practice
 
-1. **Get known vocabulary** - Query mastered/review items
-2. **Generate story** - Use story generator with known vocab
-3. **Present story** - User reads
-4. **Generate questions** - Based on user's level
-5. **Check answers** - Verify comprehension
-6. **Log results** - Track reading session
+### Check if Ready
+Before generating stories, check if user is ready:
+- Vocabulary count ≥ 100 words
+- OR violations < 5% in recent stories
+
+If not ready, suggest vocabulary building instead.
+
+### Generate Story and Process Violations
+
+1. **Get known vocabulary**
+```sql
+SELECT content FROM vocabulary WHERE level IN ('n5', 'n4');
+-- Or based on user's current level
+```
+
+2. **Generate story**
+```python
+from japanese_story_generator import StoryGenerator, ConjugationVerifier
+
+generator = StoryGenerator(api_key)
+story = generator.generate(vocab_list, strict=True)
+```
+
+3. **Verify vocabulary and get violations**
+```python
+verifier = ConjugationVerifier()
+result = verifier.verify(story, vocab_list)
+violations = result["violations"]
+```
+
+4. **Grade each violation (algorithm, not agent)**
+```python
+for v in violations:
+    grade = grade_violation(v, current_level)
+    
+    if grade == "introduce_now":
+        # Add to vocabulary table
+        INSERT INTO vocabulary (content, reading, level, source)
+        VALUES (v["surface"], v["reading"], v["jlpt_level"], "violation");
+        
+    elif grade == "queue":
+        # Add to violation_queue
+        INSERT INTO violation_queue (word, reading, jlpt_level, priority, frequency)
+        VALUES (v["surface"], v["reading"], v["jlpt_level"], 1, 1)
+        ON CONFLICT(word) DO UPDATE SET frequency = frequency + 1, last_seen = DATE('now');
+```
+
+5. **Present story to user** - User reads and answers questions
+
+6. **Log reading session**
+```sql
+INSERT INTO reading_sessions (story_id, date, comprehension_score, questions_answered, questions_correct)
+VALUES (...);
+```
+
+### Reading Comprehension Levels
+
+**Beginner (N5, < 50 words):**
+- Multiple choice in English
+- Simple: "What does X mean?"
+
+**Elementary (N5, 50+ words):**
+- Multiple choice with context
+- "What happened in the story?"
+
+**Intermediate (N4-N3):**
+- Short answer in English
+- Fill in the blank
+
+**Advanced (N2-N1):**
+- Translation exercises
+- Summary and analysis
 
 ### Reading Comprehension Levels
 
@@ -238,6 +386,82 @@ WHERE item_id = 'n5-v-001';
 3. **Review writing** - Check grammar, usage
 4. **Provide feedback** - Corrections, suggestions
 5. **Log results** - Track writing session
+
+## Queue Management
+
+### When User Advances a Level
+
+Example: User completes N5, starting N4
+
+1. **Promote queued N5 words**
+```sql
+UPDATE violation_queue
+SET status = 'promoted', promoted_date = DATE('now')
+WHERE jlpt_level = 'n5'
+  AND priority = 1
+  AND status = 'queued';
+```
+
+2. **Get promoted words for Anki**
+```sql
+SELECT word, reading, meaning
+FROM violation_queue
+WHERE status = 'promoted';
+```
+
+3. **Add to Anki deck**
+```python
+for word in promoted_words:
+    anki_connector.add_note(
+        deck_name=f"Japanese::{new_level}::Vocab",
+        front=word["word"],
+        back=f"{word['reading']}<br>{word['meaning']}"
+    )
+```
+
+4. **Update status**
+```sql
+UPDATE violation_queue
+SET status = 'introduced', introduced_date = DATE('now')
+WHERE status = 'promoted';
+```
+
+### When to Skip Violations
+
+Skip if:
+- Level distance ≥ 3 (too advanced)
+- Word is extremely rare (frequency < 0.001)
+- Word requires grammar not yet learned
+
+## Transition to Reading Tests
+
+### Criteria
+
+User is ready for reading comprehension when:
+1. Vocabulary ≥ 500 words
+2. AND violations < 5% in recent stories
+3. OR violations are only from N2/N1 levels (if user is at N4)
+
+### How to Check
+
+```sql
+-- Count vocabulary
+SELECT COUNT(*) FROM vocabulary;
+
+-- Check recent violation rate
+-- (from last 5 stories)
+SELECT 
+    AVG(violation_count * 1.0 / story_length) as avg_violation_rate
+FROM stories
+WHERE date >= DATE('now', '-7 days');
+```
+
+### When Ready
+
+1. Switch from `generate()` to `generate_with_questions()`
+2. Present comprehension questions
+3. Track scores in reading_sessions table
+4. Continue vocabulary building in parallel
 
 # Regression Detection
 

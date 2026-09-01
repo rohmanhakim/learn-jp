@@ -4,9 +4,149 @@
 
 Integrate Anki, story generator, and agent into a cohesive study workflow.
 
+# Phase 3: Study Workflow
+
+## Goal
+
+Integrate Anki, story generator, and agent into a cohesive study workflow with violation-based vocabulary enrichment.
+
+## Overview
+
+This phase implements:
+1. Study session management
+2. **Violation-based learning** (hybrid curriculum)
+3. Reading comprehension exercises
+4. Session logging and statistics
+
+### Hybrid Curriculum Approach
+
+- **JLPT curriculum** is the foundation (N5 → N4 → N3)
+- **Violations enrich** the curriculum (context-driven vocabulary)
+- **Algorithm grades** violations (deterministic, not agent judgment)
+- **Agent executes** decisions (follow algorithm output)
+
+---
+
 ## Tasks
 
-### Task 1: Create Study Session Manager
+### Task 1: Create Violation Grading Algorithm
+
+**File:** `lib/violation_grader.py`
+
+```python
+"""Grade vocabulary violations from story generation."""
+
+import sqlite3
+from typing import Literal
+
+
+# JLPT level order for distance calculation
+JLPT_LEVELS = ["n5", "n4", "n3", "n2", "n1"]
+
+
+def get_jlpt_level(word: str, db_path: str) -> str:
+    """
+    Get JLPT level of a word.
+    
+    Checks vocabulary table first, then returns None if unknown.
+    """
+    conn = sqlite3.connect(db_path)
+    cursor = conn.execute(
+        "SELECT level FROM vocabulary WHERE content = ?",
+        (word,)
+    )
+    row = cursor.fetchone()
+    conn.close()
+    
+    return row[0] if row else None
+
+
+def calculate_level_distance(current_level: str, word_level: str) -> int:
+    """
+    Calculate distance between JLPT levels.
+    
+    Returns:
+        Positive number = word is ahead of current level
+        Zero or negative = word is at or below current level
+    """
+    if current_level not in JLPT_LEVELS:
+        current_idx = 0
+    else:
+        current_idx = JLPT_LEVELS.index(current_level)
+    
+    if word_level not in JLPT_LEVELS:
+        word_idx = 2  # Default to N3 if unknown
+    else:
+        word_idx = JLPT_LEVELS.index(word_level)
+    
+    return word_idx - current_idx
+
+
+def grade_violation(
+    violation: dict,
+    current_level: str,
+    db_path: str
+) -> Literal["introduce_now", "queue", "skip"]:
+    """
+    Grade a vocabulary violation.
+    
+    Args:
+        violation: Dict with 'surface', 'reading', 'pos' keys
+        current_level: User's current JLPT level (e.g., 'n5')
+        db_path: Path to progress database
+    
+    Returns:
+        "introduce_now" - Add to vocabulary immediately
+        "queue" - Add to priority queue for later
+        "skip" - Too advanced, skip for now
+    """
+    word = violation["surface"]
+    
+    # 1. Get JLPT level of violation word
+    word_level = get_jlpt_level(word, db_path)
+    
+    # 2. Calculate level distance
+    distance = calculate_level_distance(current_level, word_level)
+    
+    # 3. Grade by distance
+    if distance <= 1:
+        # Same level or one above - should learn now
+        return "introduce_now"
+    elif distance == 2:
+        # Two levels above - queue for later
+        return "queue"
+    else:
+        # Three+ levels above - too advanced
+        return "skip"
+
+
+def process_violations(
+    violations: list,
+    current_level: str,
+    db_path: str
+) -> dict:
+    """
+    Process a list of violations and return graded results.
+    
+    Returns:
+        Dict with 'introduce_now', 'queue', 'skip' lists
+    """
+    result = {
+        "introduce_now": [],
+        "queue": [],
+        "skip": []
+    }
+    
+    for v in violations:
+        grade = grade_violation(v, current_level, db_path)
+        result[grade].append(v)
+    
+    return result
+```
+
+---
+
+### Task 2: Create Study Session Manager
 
 **File:** `lib/study_manager.py`
 
@@ -88,6 +228,183 @@ class StudyManager:
             "due_cards": stats.get(deck_name, {}).get("review_count", 0),
             "total_cards": stats.get(deck_name, {}).get("total_in_deck", 0)
         }
+    
+    def generate_story_and_process_violations(self, level: str, theme: str = None) -> dict:
+        """
+        Generate story and process violations for vocabulary enrichment.
+        
+        This is the main method for violation-based learning.
+        """
+        from japanese_story_generator import ConjugationVerifier
+        from .violation_grader import process_violations
+        
+        # Get vocabulary user knows
+        known_vocab = self.get_known_vocabulary(level)
+        
+        if len(known_vocab) < 10:
+            return {
+                "error": "Not enough vocabulary for story generation",
+                "min_required": 10,
+                "current": len(known_vocab)
+            }
+        
+        # Use up to 50 words for story generation
+        vocab_for_story = known_vocab[:50]
+        
+        # Generate story (strict mode to identify violations)
+        story = self.story_gen.generate(
+            vocab_words=vocab_for_story,
+            theme=theme,
+            strict_vocab=True
+        )
+        
+        # Verify vocabulary usage
+        verifier = ConjugationVerifier()
+        verification = verifier.verify(story, vocab_for_story)
+        violations = verification["violations"]
+        
+        # Grade violations using algorithm
+        graded = process_violations(violations, level, self.db_path)
+        
+        # Log story to database
+        db = self.get_db()
+        cursor = db.execute("""
+            INSERT INTO stories (date, theme, content, vocab_used, vocab_count, difficulty)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (
+            datetime.now().strftime("%Y-%m-%d"),
+            theme,
+            story,
+            str(vocab_for_story),
+            len(vocab_for_story),
+            "strict"
+        ))
+        db.commit()
+        story_id = cursor.lastrowid
+        
+        return {
+            "story_id": story_id,
+            "story": story,
+            "vocab_used": len(vocab_for_story),
+            "violations": violations,
+            "graded": graded,
+            "introduce_now": graded["introduce_now"],
+            "queue": graded["queue"],
+            "skip": graded["skip"]
+        }
+    
+    def add_violation_to_vocabulary(self, violation: dict, level: str) -> int:
+        """
+        Add a violation word to vocabulary table.
+        
+        Returns: vocabulary id
+        """
+        db = self.get_db()
+        
+        # Generate item_id
+        cursor = db.execute(
+            "SELECT COUNT(*) as cnt FROM vocabulary WHERE level = ?",
+            (level,)
+        )
+        count = cursor.fetchone()['cnt'] + 1
+        item_id = f"{level}-v-{count:03d}"
+        
+        # Insert vocabulary
+        cursor = db.execute("""
+            INSERT INTO vocabulary (item_id, content, reading, meaning, level, part_of_speech, source)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (
+            item_id,
+            violation["surface"],
+            violation.get("reading"),
+            violation.get("meaning"),
+            level,
+            violation.get("pos"),
+            "violation"
+        ))
+        db.commit()
+        
+        return cursor.lastrowid
+    
+    def add_violation_to_queue(self, violation: dict, level: str) -> int:
+        """
+        Add a violation word to priority queue.
+        
+        Returns: queue entry id
+        """
+        from .violation_grader import calculate_level_distance, get_jlpt_level
+        
+        db = self.get_db()
+        word = violation["surface"]
+        word_level = get_jlpt_level(word, self.db_path)
+        distance = calculate_level_distance(level, word_level)
+        
+        # Priority based on distance
+        priority = 1 if distance == 2 else 2
+        
+        # Insert or update frequency
+        cursor = db.execute("""
+            INSERT INTO violation_queue (word, reading, meaning, pos, jlpt_level, 
+                                        level_distance, priority, frequency, first_seen, last_seen)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 1, DATE('now'), DATE('now'))
+            ON CONFLICT(word) DO UPDATE SET 
+                frequency = frequency + 1,
+                last_seen = DATE('now'),
+                priority = MIN(priority, excluded.priority)
+        """, (
+            word,
+            violation.get("reading"),
+            violation.get("meaning"),
+            violation.get("pos"),
+            word_level,
+            distance,
+            priority
+        ))
+        db.commit()
+        
+        return cursor.lastrowid
+    
+    def promote_queued_words(self, completed_level: str) -> list:
+        """
+        Promote queued words when user advances a level.
+        
+        Returns list of promoted words.
+        """
+        db = self.get_db()
+        
+        # Get queued words at completed level with priority 1
+        cursor = db.execute("""
+            SELECT * FROM violation_queue
+            WHERE jlpt_level = ?
+              AND priority = 1
+              AND status = 'queued'
+            ORDER BY frequency DESC
+        """, (completed_level,))
+        
+        words = [dict(row) for row in cursor.fetchall()]
+        
+        # Update status to promoted
+        db.execute("""
+            UPDATE violation_queue
+            SET status = 'promoted', promoted_date = DATE('now')
+            WHERE jlpt_level = ?
+              AND priority = 1
+              AND status = 'queued'
+        """, (completed_level,))
+        db.commit()
+        
+        return words
+    
+    def get_queued_words(self, status: str = 'queued') -> list:
+        """Get words from violation queue."""
+        db = self.get_db()
+        cursor = db.execute("""
+            SELECT * FROM violation_queue
+            WHERE status = ?
+            ORDER BY priority ASC, frequency DESC
+        """, (status,))
+        
+        return [dict(row) for row in cursor.fetchall()]
     
     def generate_reading_exercise(self, level: str, theme: str = None) -> dict:
         """Generate a reading exercise using known vocabulary."""
@@ -400,6 +717,15 @@ print(result)
 
 ## Checklist
 
+### Violation-Based Learning
+- [ ] Create `lib/violation_grader.py` with grading algorithm
+- [ ] Add `generate_story_and_process_violations()` to StudyManager
+- [ ] Add `add_violation_to_vocabulary()` to StudyManager
+- [ ] Add `add_violation_to_queue()` to StudyManager
+- [ ] Add `promote_queued_words()` to StudyManager
+- [ ] Add `get_queued_words()` to StudyManager
+
+### Core Study Workflow
 - [ ] Create StudyManager class
 - [ ] Create ReadingHandler class
 - [ ] Create AGENTS.template.md
@@ -407,3 +733,9 @@ print(result)
 - [ ] Test reading exercise generation
 - [ ] Test session logging
 - [ ] Test statistics retrieval
+
+### Integration Tests
+- [ ] Test story generation + violation extraction
+- [ ] Test violation grading algorithm
+- [ ] Test queue promotion on level advance
+- [ ] Test end-to-end enrichment workflow

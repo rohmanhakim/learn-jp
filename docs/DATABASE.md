@@ -244,6 +244,66 @@ CREATE TABLE reading_sessions (
 
 ---
 
+### 9. violation_queue
+
+Stores vocabulary violations from story generation, prioritized for learning.
+
+```sql
+CREATE TABLE violation_queue (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    word TEXT UNIQUE NOT NULL,              -- the violation word (kanji)
+    reading TEXT,                           -- hiragana reading
+    meaning TEXT,                           -- English meaning
+    pos TEXT,                               -- part of speech
+    jlpt_level TEXT,                        -- JLPT level of this word
+    level_distance INTEGER,                -- distance from user's current level
+    priority INTEGER NOT NULL,              -- 1 = introduce soon, 2 = later
+    first_seen DATE,                        -- first time seen as violation
+    last_seen DATE,                         -- most recent sighting
+    frequency INTEGER DEFAULT 1,           -- how many times seen as violation
+    status TEXT DEFAULT 'queued',           -- 'queued', 'promoted', 'introduced', 'skipped'
+    source_story_id INTEGER,               -- FK → stories.id (which story revealed this)
+    promoted_date DATE,                    -- when moved from queue to vocabulary
+    created_at TEXT DEFAULT (datetime('now')),
+    FOREIGN KEY (source_story_id) REFERENCES stories(id)
+);
+
+CREATE INDEX idx_queue_priority ON violation_queue(priority);
+CREATE INDEX idx_queue_status ON violation_queue(status);
+CREATE INDEX idx_queue_level ON violation_queue(jlpt_level);
+```
+
+**Priority Values:**
+| Priority | Meaning | When to Introduce |
+|----------|---------|-------------------|
+| 1 | High priority | When user reaches next JLPT level |
+| 2 | Medium priority | Two levels ahead |
+| 3 | Low priority | Three+ levels ahead (rarely) |
+
+**Status Values:**
+| Status | Meaning |
+|--------|---------|
+| queued | Waiting in priority queue |
+| promoted | Ready to add to vocabulary (user reached appropriate level) |
+| introduced | Added to vocabulary and Anki |
+| skipped | Decided not to learn (too rare, too advanced, etc.) |
+
+**Example Data:**
+| word | reading | jlpt_level | priority | frequency | status |
+|------|---------|------------|----------|-----------|--------|
+| 雪 | ゆき | n4 | 1 | 3 | queued |
+| 痛い | いたい | n5 | 1 | 2 | queued |
+| 幸せ | しあわせ | n3 | 2 | 1 | queued |
+
+**How it works:**
+1. Story generated → violation detected (e.g., 雪)
+2. Heuristic grades it: N4 word, user is at N5 → priority 1
+3. Added to violation_queue
+4. When user starts N4 → words with priority 1 get promoted
+5. User adds promoted words to Anki
+
+---
+
 ## Relationships
 
 ```
@@ -319,6 +379,30 @@ SELECT date, type, items_studied, accuracy
 FROM sessions
 WHERE date >= date('now', '-7 days')
 ORDER BY date DESC;
+```
+
+### Get queued violations ready for promotion (when user advances a level)
+```sql
+SELECT * FROM violation_queue
+WHERE status = 'queued'
+  AND jlpt_level = 'n5'  -- words at the level user just completed
+  AND priority = 1
+ORDER BY frequency DESC;  -- most frequent first
+```
+
+### Get most frequent violations (to prioritize learning)
+```sql
+SELECT word, reading, frequency, jlpt_level
+FROM violation_queue
+WHERE status = 'queued'
+ORDER BY frequency DESC
+LIMIT 10;
+```
+
+### Check if a word is already queued
+```sql
+SELECT id, status FROM violation_queue
+WHERE word = '雪';
 ```
 
 ---
