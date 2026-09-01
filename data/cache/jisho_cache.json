@@ -1,0 +1,41 @@
+{
+  "食べる": {
+    "word": "食べる",
+    "reading": "たべる",
+    "meaning": "to eat; to live on (e.g. a salary); to live off",
+    "part_of_speech": "Ichidan verb",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "勉強": {
+    "word": "勉強",
+    "reading": "べんきょう",
+    "meaning": "study; diligence; working hard; experience; knowledge",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "日本語": {
+    "word": "日本語",
+    "reading": "にほんご",
+    "meaning": "Japanese (language); Japanese language",
+    "part_of_speech": "Noun",
+    "jlpt": [],
+    "is_common": true
+  },
+  "学生": {
+    "word": "学生",
+    "reading": "がくせい",
+    "meaning": "student (esp. a university student)",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  }
+}
