@@ -26,27 +26,27 @@ Create a system similar to `dsa/` repo for learning Data Structures & Algorithms
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    learn-jp System                           │
+│                    learn-jp System                          │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  ┌─────────────┐      ┌─────────────┐      ┌─────────────┐ │
-│  │    Anki     │      │    Agent    │      │   Story     │ │
-│  │  (Drill)    │◄────►│   (Brain)   │◄────►│  Generator  │ │
-│  └─────────────┘      └─────────────┘      └─────────────┘ │
-│         │                    │                    │          │
-│         │                    │                    │          │
-│         ▼                    ▼                    ▼          │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │              Progress Database (SQLite)              │   │
-│  └─────────────────────────────────────────────────────┘   │
+│  ┌─────────────┐      ┌─────────────┐      ┌─────────────┐  │
+│  │    Anki     │      │    Agent    │      │   Story     │  │
+│  │  (Drill)    │◄────►│   (Brain)   │◄────►│  Generator  │  │
+│  └─────────────┘      └─────────────┘      └─────────────┘  │
+│         │                    │                    │         │
+│         │                    │                    │         │
+│         ▼                    ▼                    ▼         │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │              Progress Database (SQLite)               │  │
+│  └───────────────────────────────────────────────────────┘  │
 │                                                             │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │              External APIs                           │   │
-│  │  ├─ AnkiConnect (localhost:8765)                     │   │
-│  │  ├─ OpenRouter (google/gemma-4-31b-it:free)         │   │
-│  │  ├─ Jisho API (jisho.org)                           │   │
-│  │  └─ Tanos.co.uk (JLPT vocabulary lists)             │   │
-│  └─────────────────────────────────────────────────────┘   │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │              External APIs                          │    │
+│  │  ├─ AnkiConnect (localhost:8765)                    │    │
+│  │  ├─ OpenRouter (google/gemma-4-26b-a4b-it:free)     │    │
+│  │  ├─ Jisho API (jisho.org)                           │    │
+│  │  └─ Tanos.co.uk (JLPT vocabulary lists)             │    │
+│  └─────────────────────────────────────────────────────┘    │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -55,7 +55,7 @@ Create a system similar to `dsa/` repo for learning Data Structures & Algorithms
 
 | Phase | Focus | Estimated Days | Status |
 |-------|-------|----------------|--------|
-| **0** | Refactor story generator to package | 1-2 | ⬜ Not started |
+| **0** | Refactor story generator to package | 1-2 | ✅ Complete |
 | **1** | Foundation (DB, repo, AnkiConnect) | 2-3 | ⬜ Not started |
 | **2** | Content pipeline (JLPT, Jisho) | 2-3 | ⬜ Not started |
 | **3** | Study workflow integration | 3-4 | ⬜ Not started |
@@ -103,8 +103,11 @@ docs/
 - Advanced: Translation, summary, analysis
 
 ### 4. Story Generator via OpenRouter
-- Uses free model: `google/gemma-4-31b-it:generate stories using only user's known vocabulary
-- Adaptdifficulty to level
+- External package: `japanese-story-generator`
+- Uses free model: `google/gemma-4-26b-a4b-it:free`
+- Generates stories using only user's known vocabulary
+- Adapts difficulty to level
+- Includes conjugation verification
 
 ### 5. Unified Progress Database
 - Tracks all skills (vocab, kanji, reading, writing)

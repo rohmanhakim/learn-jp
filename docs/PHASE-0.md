@@ -342,6 +342,34 @@ __all__ = ["AnkiVocabParser", "StoryGenerator", "OpenRouterClient"]
 
 ---
 
+## Task 8: Fix ConjugationVerifier
+
+The current verifier shows 0 conjugations and many violations. Issues:
+
+1. **Vocabulary matching** - MeCab may return different base forms than the vocabulary list
+2. **Reading format** - Vocabulary may be in kanji but MeCab returns readings
+3. **Dictionary forms** - Need to ensure vocabulary list uses dictionary forms
+
+### Debug Steps
+```python
+import MeCab
+import unidic_lite
+
+tagger = MeCab.Tagger(f"-r /dev/null -d {unidic_lite.DICDIR}")
+result = tagger.parseToNode("私は学校に行きます")
+
+while result:
+    print(f"surface={result.surface}, features={result.feature.split(',')[:7]}")
+    result = result.next
+```
+
+### Fix
+- Compare MeCab lemma output with vocabulary list format
+- Add debug mode to show matching details
+- Consider normalizing vocabulary forms
+
+---
+
 ## Testing
 
 ### Test Story Generation
@@ -362,31 +390,47 @@ gen = StoryGenerator(api_key)
 story = gen.generate(["食べる", "飲む", "水"])
 ```
 
+### Test Conjugation Verification
+```python
+from japanese_story_generator import ConjugationVerifier
+
+verifier = ConjugationVerifier()
+result = verifier.verify("私は学校に行きます", ["行く", "学校"])
+
+# Should show: 行きます matches 行く
+print(result)
+```
+
 ---
 
 ## Checklist
 
-- [ ] Restructure project into package
-- [ ] Extract AnkiVocabParser class
-- [ ] Create OpenRouterClient class
-- [ ] Refactor StoryGenerator class
-- [ ] Update CLI script
-- [ ] Update pyproject.toml
-- [ ] Add __init__.py
-- [ ] Test story generation
-- [ ] Test import from learn-jp
-- [ ] Remove old commented-out code
-- [ ] Update README.md
+- [x] Restructure project into package
+- [x] Extract AnkiVocabParser class
+- [x] Create OpenRouterClient class
+- [x] Refactor StoryGenerator class
+- [x] Update CLI script
+- [x] Update pyproject.toml
+- [x] Add __init__.py
+- [x] Test story generation
+- [x] Test import from learn-jp
+- [x] Remove old commented-out code (deleted japanese_story_gen.py)
+- [x] Update README.md
+- [x] Fix ConjugationVerifier (switched to fugashi, now working)
+- [x] Add graceful rate limit error handling
 
 ---
 
-## Dependencies to Remove
+## Dependencies Status
 
+### Removed ✅
 - `anthropic` (no longer using Claude API)
-- `torch` (not using local models for now)
-- `transformers` (not using local models for now)
-- `accelerate` (not using local models for now)
+- `torch` (not using local models)
+- `transformers` (not using local models)
+- `accelerate` (not using local models)
+- `mecab-python3` (replaced by fugashi)
 
-## Dependencies to Add
-
+### Added ✅
 - `openai` (for OpenRouter API)
+- `fugashi` (MeCab wrapper, better API)
+- `unidic-lite` (dictionary for fugashi)

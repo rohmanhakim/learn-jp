@@ -7,6 +7,10 @@ OpenRouter provides unified API access to multiple LLM providers, including free
 - Grammar explanations
 - Writing feedback
 
+**Package:** `japanese-story-generator` (handles OpenRouter API)
+
+---
+
 ## Setup
 
 ### 1. Get API Key
@@ -19,51 +23,63 @@ OpenRouter provides unified API access to multiple LLM providers, including free
 
 ### 2. Store API Key
 
-**Option A: Environment Variable**
+**Option A: Environment Variable (Recommended)**
 ```bash
 export OPENROUTER_API_KEY="sk-or-v1-..."
 ```
 
-**Option B: File**
-```bash
-echo "sk-or-v1-..." > .openrouter-api-key
+**Option B: Pass to StoryGenerator**
+```python
+from japanese_story_generator import StoryGenerator
+
+gen = StoryGenerator(api_key="sk-or-v1-...")
 ```
 
 ---
 
-## API Reference
+## Using japanese-story-generator Package
 
-### Base URL
-```
-https://openrouter.ai/api/v1
-```
+### Basic Story Generation
 
-### Authentication
 ```python
-headers = {
-    "Authorization": "Bearer sk-or-v1-...",
-    "HTTP-Referer": "https://your-app.com",
-    "X-Title": "learn-jp"
-}
+from japanese_story_generator import StoryGenerator, AnkiVocabParser
+
+# Parse vocabulary from Anki export
+parser = AnkiVocabParser("My_Japanese_Vocabulary.txt")
+vocab_words = parser.parse()
+
+# Generate story
+gen = StoryGenerator(api_key="your-key")
+story = gen.generate(
+    vocab_words=vocab_words,
+    theme="daily life",
+    max_length=500,
+    strict_vocab=True
+)
+print(story)
 ```
 
-### Request Format (OpenAI-compatible)
-```python
-from openai import OpenAI
+### Story with Comprehension Questions
 
-client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key="sk-or-v1-..."
+```python
+result = gen.generate_with_questions(
+    vocab_words=vocab_words,
+    level="n5",
+    theme="at school"
 )
 
-response = client.chat.completions.create(
-    model="google/gemma-4-31b-it:free",
-    messages=[
-        {"role": "user", "content": "Hello"}
-    ],
-    max_tokens=1000,
-    temperature=0.7
-)
+print(result["story"])
+print(result["questions"])
+```
+
+### Direct OpenRouterClient Usage
+
+```python
+from japanese_story_generator import OpenRouterClient
+
+client = OpenRouterClient(api_key="your-key")
+response = client.generate("Write a short Japanese story about cats...")
+print(response)
 ```
 
 ---
@@ -72,231 +88,65 @@ response = client.chat.completions.create(
 
 | Model | Quality | Speed | Best For |
 |-------|---------|-------|----------|
-| `google/gemma-4-31b-it:free` | ⭐⭐⭐⭐⭐ | Medium | **Story generation (recommended)** |
-| `google/gemma-4-26b-a4b-it:free` | ⭐⭐⭐⭐ | Fast | Quick tasks |
-| `nvidia/nemotron-3-ultra-550b-a55b:free` | ⭐⭐⭐⭐⭐ | Slow | Complex reasoning |
-| `nvidia/nemotron-3-super-120b-a12b:free` | ⭐⭐⭐⭐ | Medium | General use |
+| `google/gemma-4-26b-a4b-it:free` | ⭐⭐⭐⭐ | Fast | **Story generation (default)** |
+| `google/gemma-2-9b-it:free` | ⭐⭐⭐ | Fast | Quick tasks |
+| `meta-llama/llama-3.1-8b-instruct:free` | ⭐⭐⭐⭐ | Fast | General use |
+| `qwen/qwen-2-7b-instruct:free` | ⭐⭐⭐ | Fast | Japanese support |
 
-**Recommendation:** Use `google/gemma-4-31b-it:free` for story generation - best quality for free tier.
+**Paid Models (Better Quality):**
+| Model | Cost | Quality |
+|-------|------|---------|
+| `openai/gpt-4o-mini` | ~$0.001/1K tokens | ⭐⭐⭐⭐⭐ |
+| `openai/gpt-4o` | ~$0.005/1K tokens | ⭐⭐⭐⭐⭐ |
 
 ---
 
-## Integration Pattern: Story Generation
+## CLI Usage
 
-### 1. Basic Story Generation
+```bash
+# Basic usage
+uv run jp-story My_Japanese_Vocabulary.txt
 
-```python
-def generate_story(vocab_words: list, theme: str = None) -> str:
-    """Generate a story using only the provided vocabulary."""
-    
-    client = OpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=get_api_key()
-    )
-    
-    # Create word list
-    word_list = ", ".join(vocab_words)
-    
-    # Build prompt
-    prompt = f"""Write a short Japanese story (maximum 500 characters) using ONLY these vocabulary words.
+# With theme
+uv run jp-story My_Japanese_Vocabulary.txt --theme "at school"
 
-【Vocabulary List】
-{word_list}
+# Different model
+uv run jp-story My_Japanese_Vocabulary.txt --model "openai/gpt-4o-mini"
 
-【Rules】
-1. Use only words from the list
-2. You may conjugate verbs and adjectives freely
-3. You may use basic particles (は、が、を、に、で、と、の)
-4. Make the story natural and engaging
-
-{"【Theme】" + theme if theme else ""}
-
-Write the story in Japanese only:"""
-    
-    # Generate
-    response = client.chat.completions.create(
-        model="google/gemma-4-31b-it:free",
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=1000,
-        temperature=0.8
-    )
-    
-    return response.choices[0].message.content.strip()
+# Verify vocabulary usage
+uv run jp-story My_Japanese_Vocabulary.txt --verify
 ```
 
 ---
 
-### 2. Story with Comprehension Questions
+## Rate Limit Handling
 
-```python
-def generate_story_with_questions(vocab_words: list, level: str) -> dict:
-    """Generate story with comprehension questions."""
-    
-    client = OpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=get_api_key()
-    )
-    
-    word_list = ", ".join(vocab_words)
-    
-    # Adjust question difficulty based on level
-    if level in ["n5", "n4"]:
-        question_format = """
-Questions (in English, multiple choice):
-1. [Question]?
-   A) [Option]
-   B) [Option]
-   C) [Option]
-   
-Answer: [Letter]"""
-    else:
-        question_format = """
-Questions:
-1. [Question in Japanese]?
-   Answer: [Answer in English]
-   
-2. What does [Japanese word] mean?
-   Answer: [English meaning]"""
-    
-    prompt = f"""Write a short Japanese story (maximum 500 characters) using ONLY these vocabulary words.
+The package includes graceful rate limit handling:
 
-【Vocabulary List】
-{word_list}
+```
+⚠️  Rate limit exceeded for model: google/gemma-4-26b-a4b-it:free
 
-【Rules】
-1. Use only words from the list
-2. You may conjugate verbs and adjectives freely
-3. Make the story natural
-
-【Output Format】
-Story:
-[The story in Japanese]
-
-Comprehension Questions:
-{question_format}"""
-    
-    response = client.chat.completions.create(
-        model="google/gemma-4-31b-it:free",
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=1500,
-        temperature=0.8
-    )
-    
-    # Parse response
-    content = response.choices[0].message.content
-    story, questions = parse_story_response(content)
-    
-    return {
-        "story": story,
-        "questions": questions,
-        "vocab_used": vocab_words
-    }
+Free models have strict rate limits. Try:
+  1. Wait a few minutes and retry
+  2. Use a different model: --model 'openai/gpt-4o-mini'
+  3. Add your own API key: https://openrouter.ai/settings/integrations
 ```
 
 ---
 
-### 3. Writing Feedback
-
-```python
-def get_writing_feedback(user_text: str, vocab_used: list) -> str:
-    """Provide feedback on user's writing."""
-    
-    client = OpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=get_api_key()
-    )
-    
-    prompt = f"""You are a Japanese language teacher. Provide feedback on this student's writing.
-
-【Student's Writing】
-{user_text}
-
-【Vocabulary They Should Use】
-{', '.join(vocab_used)}
-
-Please provide:
-1. Grammar corrections (if any)
-2. Vocabulary usage feedback
-3. Suggestions for improvement
-4. Encouraging comments
-
-Be constructive and educational."""
-    
-    response = client.chat.completions.create(
-        model="google/gemma-4-31b-it:free",
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=800,
-        temperature=0.7
-    )
-    
-    return response.choices[0].message.content.strip()
-```
-
----
-
-## Cost Management
-
-### Free Tier Limits
-- Rate limits apply (varies by model)
-- No cost for `:free` models
-- Higher priority for paid models
-
-### Best Practices
-1. Cache responses when possible
-2. Use shorter prompts for simple tasks
-3. Implement retry logic with backoff
-4. Monitor usage in OpenRouter dashboard
-
----
-
-## Error Handling
-
-```python
-from openai import OpenAI, APIError, RateLimitError
-
-def safe_generate(prompt: str, model: str = "google/gemma-4-31b-it:free") -> str:
-    """Generate text with error handling."""
-    try:
-        client = OpenAI(
-            base_url="https://openrouter.ai/api/v1",
-            api_key=get_api_key()
-        )
-        
-        response = client.chat.completions.create(
-            model=model,
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=1000,
-            temperature=0.7
-        )
-        
-        return response.choices[0].message.content.strip()
-        
-    except RateLimitError:
-        print("Rate limited. Waiting 60 seconds...")
-        time.sleep(60)
-        return safe_generate(prompt, model)  # Retry
-        
-    except APIError as e:
-        print(f"API error: {e}")
-        return None
-        
-    except Exception as e:
-        print(f"Unexpected error: {e}")
-        return None
-```
-
----
-
-## Example Usage in learn-jp
+## Integration Pattern in learn-jp
 
 ```python
 # In agent workflow:
+
+from japanese_story_generator import StoryGenerator, AnkiVocabParser
 
 # 1. Get user's known vocabulary from DB
 known_vocab = db.get_mastered_vocabulary(user_id)
 
 # 2. Generate story
-story = generate_story(
+gen = StoryGenerator(api_key=os.getenv("OPENROUTER_API_KEY"))
+story = gen.generate(
     vocab_words=known_vocab[:50],  # Use up to 50 words
     theme="daily life"
 )
@@ -305,12 +155,14 @@ story = generate_story(
 print("Read this story:")
 print(story)
 
-# 4. Get user's comprehension
-user_answer = input("What does it mean? ")
+# 4. Verify vocabulary usage
+from japanese_story_generator import ConjugationVerifier
+verifier = ConjugationVerifier()
+result = verifier.verify(story, known_vocab)
 
-# 5. Provide feedback
-feedback = get_writing_feedback(user_answer, known_vocab[:50])
-print(feedback)
+# 5. Log violations for progress tracking
+if result["violations"]:
+    print(f"Words used outside vocabulary: {len(result['violations'])}")
 ```
 
 ---
@@ -319,4 +171,5 @@ print(feedback)
 
 - OpenRouter Docs: https://openrouter.ai/docs
 - Available Models: https://openrouter.ai/models
-- API Reference: https://openrouter.ai/api
+- API Keys: https://openrouter.ai/keys
+- japanese-story-generator: `/home/arif/Projects/japanese-story-generator`

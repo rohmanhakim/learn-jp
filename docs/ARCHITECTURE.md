@@ -49,15 +49,24 @@ Japanese (deck)
 ### 3. Story Generator (Reading Engine)
 **Role:** Generate reading practice material
 
-**Source:** Refactored from `/home/arif/Projects/japanese-story-generator`
+**Package:** `japanese-story-generator` (installed as Python package)
 
-**API:** OpenRouter (free model: `google/gemma-4-31b-it:free`)
+**API:** OpenRouter via `OpenRouterClient` class
+
+**Default Model:** `google/gemma-4-26b-a4b-it:free` (configurable)
+
+**Classes:**
+- `StoryGenerator` - Generate stories from vocabulary
+- `AnkiVocabParser` - Parse Anki exported vocabulary
+- `ConjugationVerifier` - Verify vocabulary usage in stories
+- `OpenRouterClient` - OpenRouter API client
 
 **How it works:**
 1. Agent queries DB: "what vocabulary has user mastered?"
 2. Story generator creates story using ONLY those words
 3. User reads story (reading comprehension practice)
-4. Agent generates comprehension questions based on level
+4. Conjugation verifier tracks vocabulary usage
+5. Agent generates comprehension questions based on level
 
 ---
 
@@ -188,23 +197,31 @@ def add_card(deck, front, back):
 
 **Base URL:** `https://openrouter.ai/api/v1`
 
-**Model:** `google/gemma-4-31b-it:free`
+**Default Model:** `google/gemma-4-26b-a4b-it:free`
 
 **Usage:** Story generation
 
-**Example Request:**
+**Using japanese-story-generator package:**
 ```python
-from openai import OpenAI
+from japanese_story_generator import StoryGenerator, OpenRouterClient
 
-client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key="your-openrouter-key"
-)
+# Initialize generator
+gen = StoryGenerator(api_key="your-openrouter-key")
 
-message = client.chat.completions.create(
-    model="google/gemma-4-31b-it:free",
-    messages=[{"role": "user", "content": prompt}]
+# Generate story
+story = gen.generate(
+    vocab_words=["食べる", "飲む", "水"],
+    theme="daily life",
+    strict_vocab=True
 )
+```
+
+**Direct OpenRouterClient usage:**
+```python
+from japanese_story_generator import OpenRouterClient
+
+client = OpenRouterClient(api_key="your-key")
+response = client.generate("Write a Japanese story...")
 ```
 
 ---
@@ -269,6 +286,7 @@ learn-jp/
 ├── AGENTS.md                    # Simplified mentor instructions
 ├── AGENTS.template.md           # Full mentor instructions
 ├── README.md                    # Project overview
+├── pyproject.toml               # Project dependencies
 │
 ├── progress/
 │   ├── schema.sql               # Database schema
@@ -289,7 +307,6 @@ learn-jp/
 ├── lib/
 │   ├── __init__.py
 │   ├── anki_connector.py        # AnkiConnect API wrapper
-│   ├── story_generator.py       # Story generation (from refactored project)
 │   ├── jisho_client.py          # Jisho API client
 │   └── jlpt_fetcher.py          # JLPT vocabulary fetcher
 │
@@ -308,3 +325,8 @@ learn-jp/
 │
 └── .gitignore
 ```
+
+**External Package:**
+- `japanese-story-generator` - Story generation, vocabulary parsing, conjugation verification
+  - Installed from: `/home/arif/Projects/japanese-story-generator`
+  - Classes: `StoryGenerator`, `AnkiVocabParser`, `ConjugationVerifier`, `OpenRouterClient`
