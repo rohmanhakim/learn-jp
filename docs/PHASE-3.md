@@ -1,29 +1,406 @@
-# Phase 3: Study Workflow
+# Phase 3: CLI Workflow (Rewrite)
 
 ## Goal
 
-Integrate Anki, story generator, and agent into a cohesive study workflow.
+Create CLI-based study workflow with automatic session recording.
 
-# Phase 3: Study Workflow
+**Reference:** See WORKFLOW-FINDINGS.md for full design details.
 
-## Goal
+---
 
-Integrate Anki, story generator, and agent into a cohesive study workflow with violation-based vocabulary enrichment.
+## Architecture
 
-## Overview
+### Current (Agent-First) - TO BE REPLACED
 
-This phase implements:
-1. Study session management
-2. **Violation-based learning** (hybrid curriculum)
-3. Reading comprehension exercises
-4. Session logging and statistics
+```
+User → Agent → Scripts → Anki → User reports → Agent logs
+```
 
-### Hybrid Curriculum Approach
+### New (CLI-First)
 
-- **JLPT curriculum** is the foundation (N5 → N4 → N3)
-- **Violations enrich** the curriculum (context-driven vocabulary)
-- **Algorithm grades** violations (deterministic, not agent judgment)
-- **Agent executes** decisions (follow algorithm output)
+```
+User → CLI → Scripts → Anki → Auto-pull → Done
+                ↓
+         LLM (only for story generation)
+```
+
+---
+
+## CLI Commands
+
+| Command | Purpose | LLM? |
+|---------|---------|------|
+| `learn-jp start` | Pre-flight checks, show deck info | No |
+| `learn-jp end` | Pull reviews, calculate mastery | No |
+| `learn-jp status` | Show progress, next steps | No |
+| `learn-jp story` | Generate story + comprehension | Yes |
+| `learn-jp grammar` | Grammar drill session | Tier dependent |
+| `learn-jp write` | Writing practice | Yes |
+
+---
+
+## Tasks
+
+### Task 1: Session Manager
+
+**File:** `learn_jp/session.py`
+
+```python
+"""Session management for learn-jp."""
+
+import sqlite3
+from datetime import datetime
+from pathlib import Path
+
+from .anki_connector import connector
+from .progress import ProgressTracker
+from .errors import ErrorHandler
+
+
+class SessionManager:
+    """Manages study sessions."""
+    
+    def __init__(self, db_path: str = None):
+        if db_path is None:
+            db_path = Path(__file__).parent.parent / "progress" / "progress.db"
+        self.db_path = db_path
+        self.tracker = ProgressTracker(db_path)
+        self.error_handler = ErrorHandler()
+    
+    def start_session(self) -> int:
+        """Start a new study session."""
+        # Pre-flight checks
+        checks = self.error_handler.pre_flight_check()
+        if not checks["success"]:
+            for error in checks["errors"]:
+                print(f"✗ {error}")
+            return 1
+        
+        # Show current status
+        status = self.tracker.get_current_status()
+        print(f"\nCurrent level: {status['level'].upper()}")
+        print(f"Deck: Japanese::{status['level'].upper()}::Vocab")
+        print(f"Vocabulary: {status['vocab_mastered']}/{status['vocab_total']} mastered")
+        print(f"\nReady! Open Anki and review.")
+        
+        return 0
+    
+    def end_session(self) -> int:
+        """End study session and record results."""
+        # Pull reviews from Anki
+        reviews = self._pull_anki_reviews()
+        
+        if not reviews:
+            print("No new reviews found.")
+            return 0
+        
+        # Calculate mastery
+        results = self.tracker.calculate_session_results(reviews)
+        
+        # Show summary
+        self._print_session_summary(results)
+        
+        # Update database
+        self._save_session(results)
+        
+        # Check level progression
+        self._check_level_progression()
+        
+        return 0
+    
+    def show_status(self) -> int:
+        """Show current progress."""
+        status = self.tracker.get_current_status()
+        
+        print(f"\nCurrent Level: {status['level'].upper()}")
+        print(f"{'─' * 40}")
+        print(f"Vocabulary: {status['vocab_mastered']}/{status['vocab_total']} ({status['vocab_percent']}%)")
+        print(f"Grammar: {status['grammar_mastered']}/{status['grammar_total']} ({status['grammar_percent']}%)")
+        print(f"Violation rate: {status['violation_rate']}%")
+        print(f"\nLast session: {status['last_session']}")
+        print(f"Streak: {status['streak']} days")
+        
+        # Show next milestone
+        if status['vocab_percent'] >= 80 and status['grammar_percent'] >= 80:
+            print(f"\n→ Ready for {self._get_next_level(status['level'])}!")
+        
+        return 0
+    
+    def _pull_anki_reviews(self) -> list:
+        """Pull reviews from AnkiConnect since last session."""
+        last_session = self.tracker.get_last_session_time()
+        deck_name = f"Japanese::{self.tracker.get_current_level().upper()}::Vocab"
+        
+        # Get reviews from AnkiConnect
+        reviews = connector.get_reviews(
+            deck=deck_name,
+            start_id=last_session
+        )
+        
+        return reviews
+    
+    def _print_session_summary(self, results: dict):
+        """Print session summary."""
+        print(f"\nSession Summary")
+        print(f"{'─' * 40}")
+        print(f"Reviews: {results['total']}")
+        print(f"Correct: {results['correct']} ({results['accuracy']}%)")
+        
+        if results.get('weak_words'):
+            print(f"Weak words: {', '.join(results['weak_words'][:5])}")
+        
+        print(f"\nMastery Update")
+        print(f"{'─' * 40}")
+        print(f"{results['level'].upper()} Vocab: {results['mastered']}/{results['total']} ({results['percent']}%)")
+    
+    def _check_level_progression(self):
+        """Check if ready for next level."""
+        status = self.tracker.get_current_status()
+        threshold = self.tracker.get_config("level_threshold")
+        
+        if (status['vocab_percent'] >= threshold * 100 and 
+            status['grammar_percent'] >= threshold * 100):
+            next_level = self._get_next_level(status['level'])
+            print(f"\n→ Ready for {next_level.upper()}! Run 'learn-jp start' to begin.")
+```
+
+### Task 2: Error Handler
+
+**File:** `learn_jp/errors.py`
+
+```python
+"""Error handling for learn-jp."""
+
+import requests
+from typing import List, Dict
+
+
+class ErrorHandler:
+    """Handles errors and pre-flight checks."""
+    
+    def __init__(self, anki_url: str = "http://localhost:8765"):
+        self.anki_url = anki_url
+    
+    def pre_flight_check(self) -> Dict:
+        """Run pre-flight checks before session."""
+        errors = []
+        
+        # 1. Check Anki
+        if not self.check_anki():
+            errors.append("Anki is not running. Please start Anki and try again.")
+        
+        # 2. Check database
+        if not self.check_database():
+            errors.append("Database locked. Close other instances.")
+        
+        # 3. Check network (warning only)
+        if not self.check_network():
+            print("⚠ Network unavailable. Some features disabled.")
+        
+        return {
+            "success": len(errors) == 0,
+            "errors": errors
+        }
+    
+    def check_anki(self) -> bool:
+        """Check if Anki is running."""
+        try:
+            response = requests.get(self.anki_url, timeout=2)
+            return response.status_code == 200
+        except:
+            return False
+    
+    def check_database(self) -> bool:
+        """Check if database is accessible."""
+        # TODO: Implement database check
+        return True
+    
+    def check_network(self) -> bool:
+        """Check if network is available."""
+        try:
+            response = requests.get("https://jisho.org", timeout=5)
+            return response.status_code == 200
+        except:
+            return False
+```
+
+### Task 3: Level Progression
+
+**File:** `learn_jp/progression.py`
+
+```python
+"""Level progression management."""
+
+import sqlite3
+from pathlib import Path
+
+
+LEVEL_ORDER = ["n5", "n4", "n3", "n2", "n1"]
+
+
+class LevelProgression:
+    """Manages level progression."""
+    
+    def __init__(self, db_path: str):
+        self.db_path = db_path
+    
+    def should_advance(self, level: str) -> bool:
+        """Check if user is ready for next level."""
+        # Get mastery percentages
+        vocab_mastery = self.get_vocab_mastery(level)
+        grammar_mastery = self.get_grammar_mastery(level)
+        
+        # Get threshold (default 80%)
+        threshold = self.get_config("level_threshold") or 0.8
+        
+        return vocab_mastery >= threshold and grammar_mastery >= threshold
+    
+    def advance_level(self, current_level: str) -> str:
+        """Advance to next level."""
+        next_level = self.get_next_level(current_level)
+        
+        if not next_level:
+            return None  # Already at max level
+        
+        # 1. Add queued violations at current level
+        self.promote_queued_violations(current_level)
+        
+        # 2. Fetch foundation batch for next level
+        self.fetch_foundation_batch(next_level)
+        
+        # 3. Update user's current level
+        self.update_config("current_level", next_level)
+        
+        return next_level
+    
+    def get_next_level(self, current_level: str) -> str:
+        """Get next JLPT level."""
+        if current_level not in LEVEL_ORDER:
+            return None
+        
+        idx = LEVEL_ORDER.index(current_level)
+        if idx < len(LEVEL_ORDER) - 1:
+            return LEVEL_ORDER[idx + 1]
+        return None
+    
+    def promote_queued_violations(self, level: str):
+        """Promote queued violations for level."""
+        conn = sqlite3.connect(self.db_path)
+        
+        # Get queued violations at this level
+        cursor = conn.execute("""
+            SELECT * FROM violation_queue
+            WHERE jlpt_level = ?
+              AND status = 'queued'
+              AND priority = 1
+            ORDER BY frequency DESC
+        """, (level,))
+        
+        violations = cursor.fetchall()
+        
+        for v in violations:
+            # Add to vocabulary table
+            self.add_violation_to_vocabulary(v)
+            
+            # Update status
+            conn.execute("""
+                UPDATE violation_queue
+                SET status = 'promoted', promoted_date = DATE('now')
+                WHERE id = ?
+            """, (v[0],))
+        
+        conn.commit()
+        conn.close()
+    
+    def fetch_foundation_batch(self, level: str):
+        """Fetch top 50 most common words for level."""
+        # TODO: Implement foundation batch fetch
+        # This should:
+        # 1. Load cached JLPT vocabulary
+        # 2. Select top 50 most common
+        # 3. Add to database and Anki
+        pass
+```
+
+---
+
+## Database Updates
+
+Add to schema.sql:
+
+```sql
+-- User configuration
+CREATE TABLE IF NOT EXISTS user_config (
+    key TEXT PRIMARY KEY,
+    value TEXT,
+    updated_at TEXT DEFAULT (datetime('now'))
+);
+
+-- Session violations (for tracking reduction)
+CREATE TABLE IF NOT EXISTS session_violations (
+    id INTEGER PRIMARY KEY,
+    session_id INTEGER,
+    violation_count INTEGER,
+    violation_rate REAL,
+    date TEXT,
+    FOREIGN KEY (session_id) REFERENCES sessions(id)
+);
+```
+
+---
+
+## Testing
+
+```bash
+# Test start command
+$ learn-jp start
+✓ Anki running
+✓ Database accessible
+Current level: N5
+Deck: Japanese::N5::Vocab
+Ready! Open Anki and review.
+
+# Test end command
+$ learn-jp end
+Session Summary
+───────────────
+Reviews: 25
+Correct: 20 (80%)
+
+Mastery Update
+───────────────
+N5 Vocab: 180/200 (90%)
+
+# Test status command
+$ learn-jp status
+Current Level: N5
+────────────────────────────────────
+Vocabulary: 180/200 (90%)
+Grammar: 45/80 (56%)
+Violation rate: 8%
+
+Last session: 2 hours ago
+Streak: 12 days
+```
+
+---
+
+## Checklist
+
+- [ ] Create `learn_jp/session.py` - SessionManager class
+- [ ] Create `learn_jp/errors.py` - ErrorHandler class
+- [ ] Create `learn_jp/progression.py` - LevelProgression class
+- [ ] Implement `learn-jp start` command
+- [ ] Implement `learn-jp end` command
+- [ ] Implement `learn-jp status` command
+- [ ] Add pre-flight checks (Anki, database)
+- [ ] Implement automatic session recording
+- [ ] Implement mastery calculation
+- [ ] Implement level progression checks
+- [ ] Add database tables for config and violations
+- [ ] Test CLI commands end-to-end
+- [ ] Test error handling (Anki offline)
+- [ ] Test level progression
 
 ---
 

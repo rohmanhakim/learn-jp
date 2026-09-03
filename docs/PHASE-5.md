@@ -1,8 +1,325 @@
-# Phase 5: AGENTS.md Mentor Rules
+# Phase 5: Grammar System
 
 ## Goal
 
-Create comprehensive mentor instructions for the AI coach.
+Implement three-tier grammar system with adaptive question format.
+
+**Reference:** See WORKFLOW-FINDINGS.md - Grammar Study section.
+
+---
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    TIER 1: CORE GRAMMAR                 │
+│                    (Deterministic, zero tokens)         │
+├─────────────────────────────────────────────────────────┤
+│  • Pre-defined drills for essential patterns            │
+│  • ~200 most essential patterns (N5-N4)                 │
+│  • Template variations (no LLM needed)                  │
+└─────────────────────────────────────────────────────────┘
+                         │
+                         │ if pattern not in Tier 1
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│                    TIER 2: CACHED LLM                   │
+│                    (One-time token cost)                │
+├─────────────────────────────────────────────────────────┤
+│  • LLM generates question once                          │
+│  • Cache in database with metadata                      │
+│  • Reuse with variations (change names/verbs)           │
+└─────────────────────────────────────────────────────────┘
+                         │
+                         │ if not cached or edge case
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│                    TIER 3: DYNAMIC LLM                  │
+│                    (Per-session tokens)                 │
+├─────────────────────────────────────────────────────────┤
+│  • Edge cases, rare patterns                            │
+│  • Open-ended production tasks                          │
+│  • Answer evaluation for complex responses              │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Tasks
+
+### Task 1: Core Grammar Database (Tier 1)
+
+**File:** `data/grammar/n5_grammar.json`
+
+```json
+[
+  {
+    "pattern": "～ます",
+    "structure": "Verb stem + ます",
+    "meaning": "Polite present/future",
+    "level": "n5",
+    "drills": [
+      {
+        "type": "multiple_choice",
+        "question": "What is the polite form of 食べる?",
+        "options": ["食べる", "食べて", "食べます"],
+        "answer": "C"
+      },
+      {
+        "type": "fill_blank",
+        "sentence": "毎日、日本語を____。",
+        "options": ["勉強する", "勉強して", "勉強します"],
+        "answer": "勉強します"
+      }
+    ]
+  }
+]
+```
+
+### Task 2: Grammar Drill Engine
+
+**File:** `learn_jp/grammar.py`
+
+```python
+"""Grammar drill system with three-tier architecture."""
+
+import sqlite3
+import json
+import random
+from pathlib import Path
+from typing import Dict, List, Optional
+
+
+class GrammarEngine:
+    """Manages grammar drills."""
+    
+    def __init__(self, db_path: str):
+        self.db_path = db_path
+        self.tier1_data = self._load_tier1()
+    
+    def _load_tier1(self) -> Dict:
+        """Load Tier 1 grammar data."""
+        data_file = Path(__file__).parent.parent / "data" / "grammar" / "n5_grammar.json"
+        if data_file.exists():
+            with open(data_file, 'r') as f:
+                return json.load(f)
+        return []
+    
+    def get_drill(self, pattern: str = None, mastery: float = 0) -> Dict:
+        """Get a grammar drill, adapting to mastery level."""
+        # 1. Try Tier 1 (pre-defined)
+        if pattern:
+            tier1 = self._get_tier1_drill(pattern)
+            if tier1:
+                return tier1
+        
+        # 2. Try Tier 2 (cached)
+        tier2 = self._get_tier2_drill(pattern, mastery)
+        if tier2:
+            return tier2
+        
+        # 3. Fall back to Tier 3 (dynamic LLM)
+        return self._get_tier3_drill(pattern, mastery)
+    
+    def _get_tier1_drill(self, pattern: str) -> Optional[Dict]:
+        """Get drill from Tier 1 (pre-defined)."""
+        for item in self.tier1_data:
+            if item["pattern"] == pattern:
+                # Return random drill
+                drill = random.choice(item["drills"])
+                drill["tier"] = 1
+                drill["pattern"] = pattern
+                return drill
+        return None
+    
+    def _get_tier2_drill(self, pattern: str, mastery: float) -> Optional[Dict]:
+        """Get drill from Tier 2 (cached)."""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.execute("""
+            SELECT * FROM grammar_question_cache
+            WHERE pattern = ?
+              AND difficulty BETWEEN ? - 0.2 AND ? + 0.2
+            ORDER BY effectiveness DESC, times_used ASC
+            LIMIT 1
+        """, (pattern, mastery, mastery))
+        
+        row = cursor.fetchone()
+        conn.close()
+        
+        if row:
+            # Generate variation
+            return self._generate_variation(row)
+        return None
+    
+    def _get_tier3_drill(self, pattern: str, mastery: float) -> Dict:
+        """Generate drill with LLM (Tier 3)."""
+        # TODO: Implement LLM generation
+        # For now, return placeholder
+        return {
+            "tier": 3,
+            "type": "multiple_choice",
+            "question": f"What is the {pattern} form?",
+            "options": ["Option A", "Option B", "Option C"],
+            "answer": "A",
+            "needs_llm": True
+        }
+    
+    def _generate_variation(self, cached: Dict) -> Dict:
+        """Generate variation of cached question."""
+        # TODO: Implement variation generation
+        return {
+            "tier": 2,
+            "type": cached["question_type"],
+            "question": cached["base_question"],
+            "options": json.loads(cached["options"]) if cached["options"] else [],
+            "answer": cached["correct_answer"],
+            "pattern": cached["pattern"]
+        }
+    
+    def check_answer(self, pattern: str, user_answer: str, expected: str) -> Dict:
+        """Check grammar answer."""
+        # Normalize
+        user_answer = user_answer.strip()
+        expected = expected.strip()
+        
+        # Exact match
+        if user_answer == expected:
+            return {"correct": True, "confidence": 1.0}
+        
+        # Partial match (e.g., て-form check)
+        if pattern and "て" in pattern:
+            if user_answer.endswith(("て", "で")):
+                return {"correct": True, "confidence": 0.8}
+        
+        return {"correct": False, "confidence": 0}
+    
+    def get_question_format(self, mastery: float) -> Dict:
+        """Determine question format based on mastery."""
+        if mastery < 0.3:
+            return {
+                "type": "multiple_choice",
+                "language": "english",
+                "description": "Recognition stage"
+            }
+        elif mastery < 0.7:
+            return {
+                "type": "fill_blank_options",
+                "language": "mixed",
+                "description": "Practice stage"
+            }
+        else:
+            return {
+                "type": "transform",
+                "language": "japanese",
+                "description": "Mastery stage"
+            }
+```
+
+---
+
+## Tier 1 Grammar Patterns
+
+### N5 Essential Patterns (~50-80)
+
+| Pattern | Meaning | Structure |
+|---------|---------|-----------|
+| ～ます | Polite present | Verb stem + ます |
+| ～ない | Negative | Verb stem + ない |
+| ～て | Te-form | Varies by verb type |
+| ～た | Past tense | Varies by verb type |
+| い adj + です | Polite adjective | い adj + です |
+| な adj + です | Polite adjective | な adj + です |
+| ～があります | Existence | Noun + があります |
+| ～がいます | Animate existence | Noun + がいます |
+| ～から | From/because | Time/Place + から |
+| ～まで | Until | Time/Place + まで |
+| ～たい | Want to | Verb stem + たい |
+| ～てもいい | Permission | て-form + もいい |
+| ～なければならない | Obligation | なければならない |
+| ... | ... | ... |
+
+**Full list:** Research during implementation using Genki textbook, JLPT study guides.
+
+---
+
+## Adaptive Question Format
+
+```python
+def get_question_format(mastery: float) -> Dict:
+    """Adapt based on mastery level."""
+    if mastery < 0.3:
+        return {
+            "type": "multiple_choice",
+            "language": "english",
+            "description": "Recognition stage"
+        }
+    elif mastery < 0.7:
+        return {
+            "type": "fill_blank_options",
+            "language": "mixed",
+            "description": "Practice stage"
+        }
+    else:
+        return {
+            "type": "transform",
+            "language": "japanese",
+            "description": "Mastery stage"
+        }
+```
+
+**Example by Stage:**
+
+```
+Mastery < 0.3 (Learning):
+  Q: What is the て-form of 食べる?
+     A) 食べる  B) 食べて  C) 食べます
+  → Multiple choice, English
+
+Mastery 0.3-0.7 (Practice):
+  Q: ジョンは昨日、寿司を____いました。
+     A) 食べる  B) 食べて  C) 食べます
+  → Fill blank with options
+
+Mastery > 0.7 (Mastery):
+  Q: 食べる → て-form
+  A: 食べて
+  → Transform, Japanese
+```
+
+---
+
+## Testing
+
+```bash
+# Test Tier 1 drill
+$ learn-jp grammar --pattern ～ます
+Pattern: ～ます
+Q: What is the polite form of 食べる?
+> 食べます
+✓ Correct!
+
+# Test adaptive format
+$ learn-jp grammar
+[Auto-selects pattern based on mastery]
+```
+
+---
+
+## Checklist
+
+- [ ] Create grammar data files (Tier 1)
+- [ ] Implement GrammarEngine class
+- [ ] Implement Tier 1 drill loading
+- [ ] Implement Tier 2 caching
+- [ ] Implement Tier 3 LLM generation
+- [ ] Implement adaptive question format
+- [ ] Add grammar_progress table
+- [ ] Add grammar_question_cache table
+- [ ] Add grammar_sessions table
+- [ ] Test grammar drills
+- [ ] Test answer checking
+- [ ] Test adaptive format
+- [ ] Research full Tier 1 pattern list
 
 ## Tasks
 

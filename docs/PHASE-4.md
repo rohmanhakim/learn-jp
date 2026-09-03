@@ -1,8 +1,53 @@
-# Phase 4: Progress Tracking
+# Phase 4: Progress Tracking (Updated)
 
 ## Goal
 
-Implement detailed progress tracking, mastery detection, and study suggestions.
+Implement detailed progress tracking, mastery detection, and level progression.
+
+**Reference:** See WORKFLOW-FINDINGS.md for full design.
+
+---
+
+## Overview
+
+This phase implements:
+1. Vocabulary mastery tracking (severity-based)
+2. Grammar mastery tracking (accuracy-based)
+3. Reading comprehension tracking (score-based)
+4. Writing practice tracking
+5. Violation history tracking
+6. Level progression logic
+
+---
+
+## Mastery Models
+
+### Vocabulary Mastery
+
+| Criterion | Requirement |
+|-----------|-------------|
+| Consecutive sessions | 5 |
+| Severity per session | ≤ 1 |
+| Time span | ≥ 7 days |
+| Review count | ≥ 3 in last 14 days |
+
+### Grammar Mastery
+
+| Criterion | Requirement |
+|-----------|-------------|
+| Sessions | ≥ 3 |
+| Accuracy per session | ≥ 80% |
+| Time span | ≥ 7 days |
+| Regression trigger | accuracy < 60% after mastery |
+
+### Reading Comprehension Mastery
+
+| Criterion | Requirement |
+|-----------|-------------|
+| Sessions | ≥ 3 |
+| Score per session | ≥ 70% |
+| Time span | ≥ 7 days |
+| Regression trigger | score < 50% after mastery |
 
 ## Tasks
 
@@ -406,6 +451,7 @@ print(ss.get_today_suggestion('n5'))
 
 ## Checklist
 
+### Core Progress Tracking
 - [ ] Create ProgressTracker class
 - [ ] Create StudySuggester class
 - [ ] Create ProgressReporter class
@@ -413,3 +459,95 @@ print(ss.get_today_suggestion('n5'))
 - [ ] Test regression detection
 - [ ] Test study suggestions
 - [ ] Test progress reports
+
+### New Requirements (from WORKFLOW-FINDINGS.md)
+- [ ] Add grammar_progress table to schema
+- [ ] Add grammar_question_cache table to schema
+- [ ] Add grammar_sessions table to schema
+- [ ] Add writing_sessions table to schema
+- [ ] Add session_violations table to schema
+- [ ] Add user_config table to schema
+- [ ] Implement grammar mastery tracking
+- [ ] Implement reading comprehension tracking
+- [ ] Implement writing practice tracking
+- [ ] Implement violation history tracking
+- [ ] Implement level progression logic
+- [ ] Add configurable threshold (default 80%)
+
+---
+
+## Database Schema Updates
+
+Add to schema.sql:
+
+```sql
+-- Grammar progress tracking
+CREATE TABLE IF NOT EXISTS grammar_progress (
+    pattern TEXT PRIMARY KEY,
+    level TEXT,
+    tier INTEGER,                    -- 1, 2, or 3
+    mastery REAL DEFAULT 0,          -- 0.0 to 1.0
+    sessions INTEGER DEFAULT 0,
+    correct INTEGER DEFAULT 0,
+    last_practiced TEXT,
+    status TEXT DEFAULT 'new'        -- new, learning, mastered
+);
+
+-- Grammar question cache (for Tier 2)
+CREATE TABLE IF NOT EXISTS grammar_question_cache (
+    id INTEGER PRIMARY KEY,
+    pattern TEXT NOT NULL,
+    question_type TEXT NOT NULL,
+    base_question TEXT NOT NULL,
+    slots JSON,                     -- Template slots for variation
+    correct_answer TEXT NOT NULL,
+    options JSON,
+    difficulty REAL,
+    times_used INTEGER DEFAULT 0,
+    times_correct INTEGER DEFAULT 0,
+    effectiveness REAL,
+    created_at TEXT,
+    last_used_at TEXT
+);
+
+-- Grammar sessions
+CREATE TABLE IF NOT EXISTS grammar_sessions (
+    id INTEGER PRIMARY KEY,
+    date TEXT,
+    pattern TEXT,
+    question_type TEXT,
+    correct INTEGER,
+    time_spent INTEGER
+);
+
+-- Writing practice sessions
+CREATE TABLE IF NOT EXISTS writing_sessions (
+    id INTEGER PRIMARY KEY,
+    date TEXT,
+    prompt_type TEXT,        -- 'construction', 'translation', 'prompt', 'free'
+    prompt TEXT,
+    user_response TEXT,
+    vocabulary_used TEXT,     -- JSON: words used
+    grammar_patterns TEXT,    -- JSON: patterns used
+    score REAL,              -- 0.0 to 1.0
+    feedback TEXT,           -- LLM feedback
+    time_spent INTEGER
+);
+
+-- Session violations (for tracking reduction)
+CREATE TABLE IF NOT EXISTS session_violations (
+    id INTEGER PRIMARY KEY,
+    session_id INTEGER,
+    violation_count INTEGER,
+    violation_rate REAL,
+    date TEXT,
+    FOREIGN KEY (session_id) REFERENCES sessions(id)
+);
+
+-- User configuration
+CREATE TABLE IF NOT EXISTS user_config (
+    key TEXT PRIMARY KEY,
+    value TEXT,
+    updated_at TEXT DEFAULT (datetime('now'))
+);
+```

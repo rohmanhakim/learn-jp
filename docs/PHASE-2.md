@@ -438,6 +438,7 @@ python scripts/add_vocab.py --words "勉強する,宿題,先生" --dry-run
 
 ## Checklist
 
+### Content Pipeline
 - [x] Create JLPTFetcher class
 - [x] Test JLPT vocabulary fetching
 - [ ] Download KANJIDIC data file
@@ -450,3 +451,148 @@ python scripts/add_vocab.py --words "勉強する,宿題,先生" --dry-run
 - [ ] Test adding custom vocabulary
 - [ ] Handle rate limiting
 - [ ] Handle errors gracefully
+
+### CLI Entry Point (NEW)
+- [ ] Create `learn_jp/cli.py` - main CLI module
+- [ ] Implement `learn-jp start` - pre-flight checks, show deck info
+- [ ] Implement `learn-jp end` - pull reviews, calculate mastery, show summary
+- [ ] Implement `learn-jp status` - show progress, mastery, next steps
+- [ ] Implement `learn-jp story` - generate story + comprehension test
+- [ ] Implement `learn-jp config` - view/set configuration
+- [ ] Add pyproject.toml entry point for CLI
+- [ ] Test CLI commands end-to-end
+
+---
+
+## CLI Design
+
+### Commands
+
+```bash
+# Start study session (pre-flight checks)
+$ learn-jp start
+  Checking Anki... ✓
+  Current level: N5
+  Deck: Japanese::N5::Vocab (800 cards)
+  Ready! Open Anki and review.
+
+# End study session (auto-pull reviews)
+$ learn-jp end
+  Session Summary
+  ───────────────
+  Reviews: 25
+  Correct: 20 (80%)
+  Weak words: 痛い, 働く, 掛ける
+  
+  Mastery Update
+  ───────────────
+  N5 Vocab: 180/200 mastered (90%)
+  Ready for N4 in ~2 weeks
+
+# Show progress
+$ learn-jp status
+  Current Level: N5
+  Vocabulary: 180/200 mastered (90%)
+  Grammar: 45/80 patterns (56%)
+  Violation rate: 8%
+  Last session: 2 hours ago
+  Streak: 12 days
+
+# Generate story + comprehension test
+$ learn-jp story
+  Generating story...
+  Story: [displayed]
+  
+  Questions:
+  1. Where did Taro go?
+     A) Store  B) School  C) Home
+  > A
+  ✓ Correct!
+  
+  Score: 4/5 (80%)
+
+# Grammar drill
+$ learn-jp grammar
+  Pattern: ～ます
+  Q: What is the polite form of 食べる?
+  > 食べます
+  ✓ Correct!
+
+# Writing practice
+$ learn-jp write
+  Prompt: Write what you ate yesterday using ～ました
+  > 私は昨日、寿司を食べました。
+  ✓ Great! Natural sentence.
+```
+
+### Implementation
+
+**File:** `learn_jp/cli.py`
+
+```python
+import argparse
+import sys
+from pathlib import Path
+
+def main():
+    parser = argparse.ArgumentParser(
+        prog="learn-jp",
+        description="Japanese learning system"
+    )
+    subparsers = parser.add_subparsers(dest="command")
+    
+    # learn-jp start
+    subparsers.add_parser("start", help="Start study session")
+    
+    # learn-jp end
+    subparsers.add_parser("end", help="End study session")
+    
+    # learn-jp status
+    subparsers.add_parser("status", help="Show progress")
+    
+    # learn-jp story
+    story_parser = subparsers.add_parser("story", help="Generate story")
+    story_parser.add_argument("--theme", help="Story theme")
+    story_parser.add_argument("--questions", type=int, default=5, help="Max questions")
+    
+    # learn-jp grammar
+    grammar_parser = subparsers.add_parser("grammar", help="Grammar drill")
+    grammar_parser.add_argument("--pattern", help="Specific pattern")
+    
+    # learn-jp write
+    write_parser = subparsers.add_parser("write", help="Writing practice")
+    write_parser.add_argument("--type", choices=["construction", "translation", "prompt"])
+    
+    args = parser.parse_args()
+    
+    if not args.command:
+        parser.print_help()
+        return 1
+    
+    # Dispatch to command handler
+    from learn_jp.session import SessionManager
+    manager = SessionManager()
+    
+    if args.command == "start":
+        return manager.start_session()
+    elif args.command == "end":
+        return manager.end_session()
+    elif args.command == "status":
+        return manager.show_status()
+    elif args.command == "story":
+        return manager.run_story(args.theme, args.questions)
+    elif args.command == "grammar":
+        return manager.run_grammar(args.pattern)
+    elif args.command == "write":
+        return manager.run_writing(args.type)
+
+if __name__ == "__main__":
+    sys.exit(main())
+```
+
+**pyproject.toml entry:**
+
+```toml
+[project.scripts]
+learn-jp = "learn_jp.cli:main"
+```

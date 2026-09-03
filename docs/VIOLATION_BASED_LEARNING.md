@@ -32,7 +32,7 @@ Follow the JLPT curriculum as your base, but enrich it with vocabulary that the 
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│              HYBRID LEARNING: CURRICULUM + ENRICHMENT        │
+│              HYBRID LEARNING: CURRICULUM + ENRICHMENT       │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
 │  DAILY FLOW                                                 │

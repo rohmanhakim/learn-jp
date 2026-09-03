@@ -1,8 +1,442 @@
-# Phase 6: Polish & Testing
+# Phase 6: Reading Comprehension & Writing
 
 ## Goal
 
-Final testing, error handling, documentation, and deployment preparation.
+Implement reading comprehension and writing practice with adaptive question design.
+
+**Reference:** See WORKFLOW-FINDINGS.md for full design.
+
+---
+
+## Reading Comprehension
+
+### Adaptive Question Design
+
+| Level | Vocabulary | Language | Types | Production |
+|-------|-----------|----------|-------|------------|
+| N5 early | < 100 | English | Multiple choice | None |
+| N5 late | 100-200 | English | MC + short answer | Minimal |
+| N4 | 200-500 | Mixed | MC + short answer + fill blank | Simple |
+| N3 | 500-1000 | Japanese | Short answer + production | Moderate |
+| N2-N1 | 1000+ | Japanese | Open-ended + analysis | Extended |
+
+### Question Count (Adaptive with Max)
+
+```python
+MAX_QUESTIONS = get_config("max_comprehension_questions")  # default: 5
+
+def get_question_count(story_length: int, vocab_size: int) -> int:
+    """Determine question count, enforced deterministically."""
+    if story_length < 200:
+        ideal = 3
+    elif story_length < 500:
+        ideal = 4
+    else:
+        ideal = 5
+    
+    return min(ideal, MAX_QUESTIONS)  # Hard limit
+```
+
+### Tasks
+
+#### Task 1: Reading Comprehension Engine
+
+**File:** `learn_jp/reading.py`
+
+```python
+"""Reading comprehension system."""
+
+import sqlite3
+from typing import Dict, List
+
+
+class ReadingComprehension:
+    """Manages reading comprehension exercises."""
+    
+    def __init__(self, db_path: str):
+        self.db_path = db_path
+    
+    def get_question_config(self, vocab_size: int, level: str) -> Dict:
+        """Determine question format based on vocabulary size."""
+        if vocab_size < 100:
+            return {
+                "language": "english",
+                "types": ["multiple_choice"],
+                "count": 3,
+                "production": False
+            }
+        elif vocab_size < 200:
+            return {
+                "language": "english",
+                "types": ["multiple_choice", "short_answer"],
+                "count": 4,
+                "production": "minimal"
+            }
+        elif vocab_size < 500:
+            return {
+                "language": "mixed",
+                "types": ["multiple_choice", "short_answer", "fill_blank"],
+                "count": 5,
+                "production": "simple"
+            }
+        elif vocab_size < 1000:
+            return {
+                "language": "japanese",
+                "types": ["short_answer", "production"],
+                "count": 5,
+                "production": "moderate"
+            }
+        else:
+            return {
+                "language": "japanese",
+                "types": ["open_ended", "production", "analysis"],
+                "count": 5,
+                "production": "extended"
+            }
+    
+    def log_session(self, story_id: int, score: float, 
+                   questions_total: int, questions_correct: int,
+                   time_spent: int, source: str = "generated"):
+        """Log reading comprehension session."""
+        conn = sqlite3.connect(self.db_path)
+        
+        conn.execute("""
+            INSERT INTO reading_sessions 
+            (story_id, date, time_spent_seconds, comprehension_score,
+             questions_answered, questions_correct, notes)
+            VALUES (?, DATE('now'), ?, ?, ?, ?, ?)
+        """, (story_id, time_spent, score, questions_total, 
+               questions_correct, f"source:{source}"))
+        
+        conn.commit()
+        conn.close()
+    
+    def check_answer(self, user_answer: str, correct_answer: str, 
+                    question_type: str) -> bool:
+        """Check if answer is correct."""
+        user_answer = user_answer.strip().lower()
+        correct_answer = correct_answer.strip().lower()
+        
+        if question_type == "multiple_choice":
+            return user_answer == correct_answer
+        elif question_type == "short_answer":
+            return user_answer == correct_answer
+        else:
+            # For open-ended, use LLM evaluation
+            return None  # Needs LLM
+```
+
+#### Task 2: Story + Questions Integration
+
+**File:** `learn_jp/story_session.py`
+
+```python
+"""Story generation and comprehension session."""
+
+from japanese_story_generator import StoryGenerator, ConjugationVerifier
+from .reading import ReadingComprehension
+from .violation_grader import process_violations
+
+
+class StorySession:
+    """Manages story generation and comprehension."""
+    
+    def __init__(self, db_path: str, api_key: str):
+        self.db_path = db_path
+        self.generator = StoryGenerator(api_key)
+        self.verifier = ConjugationVerifier()
+        self.reader = ReadingComprehension(db_path)
+    
+    def run_session(self, vocab_words: List[str], level: str,
+                   theme: str = None, max_questions: int = 5) -> Dict:
+        """Run full story + comprehension session."""
+        # 1. Generate story
+        story = self.generator.generate(
+            vocab_words, 
+            theme=theme,
+            strict_vocab=True
+        )
+        
+        # 2. Verify vocabulary (find violations)
+        verification = self.verifier.verify(story, vocab_words)
+        violations = verification["violations"]
+        
+        # 3. Get question config
+        config = self.reader.get_question_config(len(vocab_words), level)
+        question_count = min(config["count"], max_questions)  # Enforce max
+        
+        # 4. Generate questions (via LLM)
+        questions = self._generate_questions(
+            story, level, config, question_count
+        )
+        
+        # 5. Present to user and collect answers
+        score = self._run_quiz(questions)
+        
+        # 6. Log session
+        self.reader.log_session(
+            story_id=None,  # Would be saved story ID
+            score=score,
+            questions_total=len(questions),
+            questions_correct=score * len(questions),
+            time_spent=0,  # Would be actual time
+            source="generated"
+        )
+        
+        return {
+            "story": story,
+            "violations": violations,
+            "score": score,
+            "questions": questions
+        }
+    
+    def _generate_questions(self, story: str, level: str,
+                          config: Dict, count: int) -> List[Dict]:
+        """Generate comprehension questions."""
+        # TODO: Implement LLM question generation
+        return []
+    
+    def _run_quiz(self, questions: List[Dict]) -> float:
+        """Run quiz and return score."""
+        # TODO: Implement interactive quiz
+        return 0.0
+```
+
+---
+
+## Writing Practice
+
+### Progressive Writing Types
+
+| Level | Writing Type | Example |
+|-------|-------------|---------|
+| N5 early | Guided construction (word bank) | "Make sentence: 食べる + 今日 + ごはん" |
+| N5 late | Simple translation | "I eat sushi" → ? |
+| N4 | Translation with grammar | "I ate sushi yesterday" → ? |
+| N3+ | Free writing prompts | "Write about your weekend" |
+
+### Tasks
+
+#### Task 1: Writing Practice Engine
+
+**File:** `learn_jp/writing.py`
+
+```python
+"""Writing practice system."""
+
+import sqlite3
+from typing import Dict
+
+
+class WritingPractice:
+    """Manages writing exercises."""
+    
+    def __init__(self, db_path: str):
+        self.db_path = db_path
+    
+    def get_writing_prompt(self, vocab_size: int, 
+                          grammar_mastery: float) -> Dict:
+        """Get writing prompt based on level."""
+        if vocab_size < 100:
+            return {
+                "type": "construction",
+                "words": ["食べる", "今日", "ごはん"],
+                "prompt": "Make a sentence using these words"
+            }
+        elif vocab_size < 300:
+            return {
+                "type": "translation",
+                "english": "I eat sushi",
+                "hint": "Use ～ます form"
+            }
+        else:
+            return {
+                "type": "prompt",
+                "prompt": "昨日、何を食べましたか？日本語で書いてください。",
+                "grammar_hint": "～ました"
+            }
+    
+    def log_session(self, prompt_type: str, prompt: str,
+                   user_response: str, score: float,
+                   feedback: str, time_spent: int):
+        """Log writing session."""
+        conn = sqlite3.connect(self.db_path)
+        
+        conn.execute("""
+            INSERT INTO writing_sessions
+            (date, prompt_type, prompt, user_response, score, 
+             feedback, time_spent)
+            VALUES (DATE('now'), ?, ?, ?, ?, ?, ?)
+        """, (prompt_type, prompt, user_response, score, 
+               feedback, time_spent))
+        
+        conn.commit()
+        conn.close()
+    
+    def evaluate_writing(self, prompt: str, user_response: str,
+                        vocab_words: List[str]) -> Dict:
+        """Evaluate writing (uses LLM for naturalness)."""
+        # Check vocabulary usage
+        vocab_used = [w for w in vocab_words if w in user_response]
+        
+        # TODO: Use LLM for naturalness evaluation
+        return {
+            "vocab_used": vocab_used,
+            "score": 0.0,  # Would be LLM score
+            "feedback": ""  # Would be LLM feedback
+        }
+```
+
+---
+
+## Error Handling
+
+### Tasks
+
+#### Task 1: Error Handler
+
+**File:** `learn_jp/errors.py`
+
+```python
+"""Error handling for learn-jp."""
+
+import requests
+from typing import Dict, List
+
+
+class ErrorHandler:
+    """Handles errors and pre-flight checks."""
+    
+    def __init__(self, anki_url: str = "http://localhost:8765"):
+        self.anki_url = anki_url
+    
+    def pre_flight_check(self) -> Dict:
+        """Run pre-flight checks before session."""
+        errors = []
+        
+        # 1. Check Anki (required)
+        if not self.check_anki():
+            errors.append("Anki is not running. Please start Anki and try again.")
+        
+        # 2. Check database
+        if not self.check_database():
+            errors.append("Database locked. Close other instances.")
+        
+        # 3. Check network (warning only)
+        if not self.check_network():
+            print("⚠ Network unavailable. Some features disabled.")
+        
+        return {
+            "success": len(errors) == 0,
+            "errors": errors
+        }
+    
+    def check_anki(self) -> bool:
+        """Check if Anki is running."""
+        try:
+            response = requests.get(self.anki_url, timeout=2)
+            return response.status_code == 200
+        except:
+            return False
+    
+    def check_database(self) -> bool:
+        """Check if database is accessible."""
+        return True  # TODO: Implement
+    
+    def check_network(self) -> bool:
+        """Check if network is available."""
+        try:
+            response = requests.get("https://jisho.org", timeout=5)
+            return response.status_code == 200
+        except:
+            return False
+    
+    def handle_story_generation(self, api_key: str) -> Dict:
+        """Handle story generation with fallback."""
+        try:
+            # Try generating new story
+            from japanese_story_generator import StoryGenerator
+            gen = StoryGenerator(api_key)
+            story = gen.generate(vocab_words, strict_vocab=True)
+            return {"story": story, "source": "generated"}
+        except Exception as e:
+            # Fallback to cached story
+            story = self._get_cached_story()
+            return {"story": story, "source": "cached"}
+    
+    def _get_cached_story(self) -> str:
+        """Get cached story for fallback."""
+        # TODO: Implement story caching
+        return "Cached story placeholder"
+```
+
+---
+
+## Testing
+
+```bash
+# Test reading comprehension
+$ learn-jp story
+Generating story...
+
+Story:
+太郎は昨日、市場に行きました。彼は寿司を食べました。
+
+Questions:
+1. Where did Taro go yesterday?
+   A) Store  B) Market  C) School
+> B
+✓ Correct!
+
+2. What did he eat?
+   A) Sushi  B) Ramen  C) Curry
+> A
+✓ Correct!
+
+Score: 2/2 (100%)
+
+# Test writing practice
+$ learn-jp write
+Prompt: Write what you ate yesterday using ～ました
+> 私は昨日、ラーメンを食べました。
+✓ Great! Natural sentence.
+
+# Test error handling
+$ learn-jp start
+✗ Anki is not running. Please start Anki and try again.
+```
+
+---
+
+## Checklist
+
+### Reading Comprehension
+- [ ] Create ReadingComprehension class
+- [ ] Create StorySession class
+- [ ] Implement adaptive question config
+- [ ] Implement question count limits
+- [ ] Implement session logging
+- [ ] Test reading comprehension flow
+
+### Writing Practice
+- [ ] Create WritingPractice class
+- [ ] Implement adaptive prompt generation
+- [ ] Implement session logging
+- [ ] Test writing practice flow
+
+### Error Handling
+- [ ] Create ErrorHandler class
+- [ ] Implement pre-flight checks
+- [ ] Implement Anki detection
+- [ ] Implement network detection
+- [ ] Implement story fallback
+- [ ] Test error scenarios
+
+### Integration
+- [ ] Integrate with CLI commands
+- [ ] Test full session flow
+- [ ] Test offline mode
+- [ ] Test level progression
 
 ## Tasks
 

@@ -45,7 +45,7 @@ The content pipeline fetches vocabulary and kanji from external sources, process
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    CONTENT PIPELINE                          │
+│                    CONTENT PIPELINE                         │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
 │  1. FETCH (from sources)                                    │
