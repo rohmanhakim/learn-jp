@@ -122,6 +122,76 @@ CREATE TABLE IF NOT EXISTS reading_sessions (
     FOREIGN KEY (story_id) REFERENCES stories(id)
 );
 
+-- Grammar progress tracking (Phase 4)
+CREATE TABLE IF NOT EXISTS grammar_progress (
+    pattern TEXT PRIMARY KEY,
+    level TEXT,
+    tier INTEGER,                    -- 1, 2, or 3
+    mastery REAL DEFAULT 0,          -- 0.0 to 1.0
+    sessions INTEGER DEFAULT 0,
+    correct INTEGER DEFAULT 0,
+    last_practiced TEXT,
+    status TEXT DEFAULT 'new'        -- new, learning, mastered
+);
+
+-- Grammar question cache (for Tier 2)
+CREATE TABLE IF NOT EXISTS grammar_question_cache (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    pattern TEXT NOT NULL,
+    question_type TEXT NOT NULL,
+    base_question TEXT NOT NULL,
+    slots JSON,                     -- Template slots for variation
+    correct_answer TEXT NOT NULL,
+    options JSON,
+    difficulty REAL,
+    times_used INTEGER DEFAULT 0,
+    times_correct INTEGER DEFAULT 0,
+    effectiveness REAL,
+    created_at TEXT DEFAULT (datetime('now')),
+    last_used_at TEXT
+);
+
+-- Grammar sessions
+CREATE TABLE IF NOT EXISTS grammar_sessions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date TEXT,
+    pattern TEXT,
+    question_type TEXT,
+    correct INTEGER,
+    time_spent INTEGER
+);
+
+-- Writing practice sessions
+CREATE TABLE IF NOT EXISTS writing_sessions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date TEXT,
+    prompt_type TEXT,        -- 'construction', 'translation', 'prompt', 'free'
+    prompt TEXT,
+    user_response TEXT,
+    vocabulary_used TEXT,     -- JSON: words used
+    grammar_patterns TEXT,    -- JSON: patterns used
+    score REAL,              -- 0.0 to 1.0
+    feedback TEXT,           -- LLM feedback
+    time_spent INTEGER
+);
+
+-- Session violations (for tracking reduction)
+CREATE TABLE IF NOT EXISTS session_violations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    session_id INTEGER,
+    violation_count INTEGER,
+    violation_rate REAL,
+    date TEXT,
+    FOREIGN KEY (session_id) REFERENCES sessions(id)
+);
+
+-- User configuration
+CREATE TABLE IF NOT EXISTS user_config (
+    key TEXT PRIMARY KEY,
+    value TEXT,
+    updated_at TEXT DEFAULT (datetime('now'))
+);
+
 -- Schema version tracking
 CREATE TABLE IF NOT EXISTS schema_version (
     version INTEGER PRIMARY KEY,
