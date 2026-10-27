@@ -23,7 +23,7 @@ def init_db():
     
     # Log schema version
     conn.execute(
-        "INSERT OR IGNORE INTO schema_version (version) VALUES (1)"
+        "INSERT OR IGNORE INTO schema_version (version) VALUES (2)"
     )
     conn.commit()
     conn.close()

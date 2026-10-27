@@ -37,5 +37,2926 @@
       "jlpt-n5"
     ],
     "is_common": true
+  },
+  "毎朝": {
+    "word": "毎朝",
+    "reading": "まいあさ",
+    "meaning": "every morning",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "問題": {
+    "word": "問題",
+    "reading": "もんだい",
+    "meaning": "question (e.g. on a test); problem; problem (e.g. societal, political); question; question (i.e. doubt)",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "お茶": {
+    "word": "お茶",
+    "reading": "おちゃ",
+    "meaning": "tea (esp. green or barley); tea break; teatime; tea ceremony",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "黒": {
+    "word": "黒",
+    "reading": "くろ",
+    "meaning": "black; black stone; guilt; guilty person",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "台所": {
+    "word": "台所",
+    "reading": "だいどころ",
+    "meaning": "kitchen; financial situation; finances; Kitchen",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "葉書": {
+    "word": "葉書",
+    "reading": "はがき",
+    "meaning": "postcard; memo; note",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "ペン": {
+    "word": "ペン",
+    "reading": "ペン",
+    "meaning": "pen; Pen",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n2",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "ニュース": {
+    "word": "ニュース",
+    "reading": "ニュース",
+    "meaning": "news; News",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "花瓶": {
+    "word": "花瓶",
+    "reading": "かびん",
+    "meaning": "(flower) vase; Vase",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "フォーク": {
+    "word": "フォーク",
+    "reading": "フォーク",
+    "meaning": "fork; forkball",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "引く": {
+    "word": "引く",
+    "reading": "ひく",
+    "meaning": "to pull; to tug; to draw (attention, sympathy, etc.); to attract (e.g. interest); to draw back (e.g. one's hand)",
+    "part_of_speech": "Godan verb with 'ku' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "フィルム": {
+    "word": "フィルム",
+    "reading": "フィルム",
+    "meaning": "film",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "磨く": {
+    "word": "磨く",
+    "reading": "みがく",
+    "meaning": "to polish; to shine; to refine (a skill, etc.); to improve",
+    "part_of_speech": "Godan verb with 'ku' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "押す": {
+    "word": "押す",
+    "reading": "おす",
+    "meaning": "to push; to thrust; to press (down); to push (e.g. a button); to stamp (e.g. one's name)",
+    "part_of_speech": "Godan verb with 'su' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "売る": {
+    "word": "売る",
+    "reading": "うる",
+    "meaning": "to sell; to betray; to sell out (one's friend, country, etc.); to make (oneself) known; to establish (a reputation) for oneself",
+    "part_of_speech": "Godan verb with 'ru' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "電気": {
+    "word": "電気",
+    "reading": "でんき",
+    "meaning": "electricity; (electric) light; Electricity",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "並ぶ": {
+    "word": "並ぶ",
+    "reading": "ならぶ",
+    "meaning": "to line up; to stand in a line; to rival; to match",
+    "part_of_speech": "Godan verb with 'bu' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "病気": {
+    "word": "病気",
+    "reading": "びょうき",
+    "meaning": "illness (usu. excluding minor ailments, e.g. common cold); disease; bad habit; bad behaviour; crazy",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "ポケット": {
+    "word": "ポケット",
+    "reading": "ポケット",
+    "meaning": "pocket; Pocket",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "頭": {
+    "word": "頭",
+    "reading": "あたま",
+    "meaning": "head; hair (on one's head); mind; brains",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "はし": {
+    "word": "はし",
+    "reading": "はし",
+    "meaning": "bridge; Bridge",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "英語": {
+    "word": "英語",
+    "reading": "えいご",
+    "meaning": "English (language); English language",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "家": {
+    "word": "家",
+    "reading": "いえ",
+    "meaning": "house; residence; family; household; lineage",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "一月": {
+    "word": "一月",
+    "reading": "ひとつき",
+    "meaning": "one month",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "暑い": {
+    "word": "暑い",
+    "reading": "あつい",
+    "meaning": "hot; warm; passionate; impassioned; on everybody's mind",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "遊ぶ": {
+    "word": "遊ぶ",
+    "reading": "あそぶ",
+    "meaning": "to play (games, sports); to enjoy oneself; to mess about (with alcohol, gambling, philandery, etc.); to be idle; to do nothing",
+    "part_of_speech": "Godan verb with 'bu' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "取る": {
+    "word": "取る",
+    "reading": "とる",
+    "meaning": "to take; to pick up; to pass; to hand; to get",
+    "part_of_speech": "Godan verb with 'ru' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "九": {
+    "word": "九",
+    "reading": "きゅう",
+    "meaning": "nine; 9",
+    "part_of_speech": "Numeric",
+    "jlpt": [
+      "jlpt-n3"
+    ],
+    "is_common": true
+  },
+  "閉める": {
+    "word": "閉める",
+    "reading": "しめる",
+    "meaning": "to close; to shut",
+    "part_of_speech": "Ichidan verb",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "たいへん": {
+    "word": "たいへん",
+    "reading": "たいへん",
+    "meaning": "very; greatly; immense; enormous; serious",
+    "part_of_speech": "Adverb (fukushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "奥さん": {
+    "word": "奥さん",
+    "reading": "おくさん",
+    "meaning": "wife; your wife",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n2",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "作文": {
+    "word": "作文",
+    "reading": "さくぶん",
+    "meaning": "writing (an essay, prose, etc.); composition; formal writing with little real meaning; Composition (language)",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "便利": {
+    "word": "便利",
+    "reading": "べんり",
+    "meaning": "convenient; handy",
+    "part_of_speech": "Na-adjective (keiyodoshi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "右": {
+    "word": "右",
+    "reading": "みぎ",
+    "meaning": "right; right-hand side; right hand; the above (in a piece of vertical writing); above-mentioned",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "寒い": {
+    "word": "寒い",
+    "reading": "さむい",
+    "meaning": "cold (e.g. weather); uninteresting (esp. joke); lame",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "あびる": {
+    "word": "あびる",
+    "reading": "あびる",
+    "meaning": "to dash over oneself (e.g. water); to take (e.g. shower); to suffer (e.g. an attack); to draw (e.g. criticism, attention, praise)",
+    "part_of_speech": "Ichidan verb",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "十": {
+    "word": "十",
+    "reading": "じゅう",
+    "meaning": "ten; 10; ten years of age; book containing a collection of poems",
+    "part_of_speech": "Numeric",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "中": {
+    "word": "中",
+    "reading": "ちゅう",
+    "meaning": "medium (size); average (grade, level, etc.); in; within; during",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n3"
+    ],
+    "is_common": true
+  },
+  "消す": {
+    "word": "消す",
+    "reading": "けす",
+    "meaning": "to erase; to rub out; to turn off (a light, TV, heater, etc.); to switch off; to extinguish (a fire, candle, etc.)",
+    "part_of_speech": "Godan verb with 'su' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "近く": {
+    "word": "近く",
+    "reading": "ちかく",
+    "meaning": "near; neighbourhood; nearly (e.g. \"it took nearly one year\"); close to; shortly",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "七つ": {
+    "word": "七つ",
+    "reading": "ななつ",
+    "meaning": "seven; seven years of age; four o'clock (old time system)",
+    "part_of_speech": "Numeric",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "テープレコーダー": {
+    "word": "テープレコーダー",
+    "reading": "テープレコーダー",
+    "meaning": "tape recorder; Tape recorder",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "目": {
+    "word": "目",
+    "reading": "め",
+    "meaning": "eye; eyeball; eyesight; sight; look",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "空": {
+    "word": "空",
+    "reading": "そら",
+    "meaning": "sky; the air; weather; far-off place; distant place",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "六日": {
+    "word": "六日",
+    "reading": "むいか",
+    "meaning": "6th day of the month; six days; Muika",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "座る": {
+    "word": "座る",
+    "reading": "すわる",
+    "meaning": "to sit (down); to have a seat; to assume (a position); to take on (a duty)",
+    "part_of_speech": "Godan verb with 'ru' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "年": {
+    "word": "年",
+    "reading": "とし",
+    "meaning": "year; age; years; past one's prime; old age",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "男の子": {
+    "word": "男の子",
+    "reading": "おとこのこ",
+    "meaning": "boy; son; young man",
+    "part_of_speech": "Expressions (phrases, clauses, etc.)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "狭い": {
+    "word": "狭い",
+    "reading": "せまい",
+    "meaning": "narrow; confined; limited; narrow-minded",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "冷蔵庫": {
+    "word": "冷蔵庫",
+    "reading": "れいぞうこ",
+    "meaning": "refrigerator; fridge; Refrigerator",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "カメラ": {
+    "word": "カメラ",
+    "reading": "カメラ",
+    "meaning": "camera; Camera",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "玄関": {
+    "word": "玄関",
+    "reading": "げんかん",
+    "meaning": "entrance; front door; Genkan",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "違う": {
+    "word": "違う",
+    "reading": "ちがう",
+    "meaning": "to differ (from); to be different; to be wrong; to be incorrect; to become abnormal",
+    "part_of_speech": "Godan verb with 'u' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "危ない": {
+    "word": "危ない",
+    "reading": "あぶない",
+    "meaning": "dangerous; risky; in danger; in jeopardy; uncertain",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "分かる": {
+    "word": "分かる",
+    "reading": "わかる",
+    "meaning": "to understand; to comprehend; to become clear; to be known; I know!",
+    "part_of_speech": "Godan verb with 'ru' ending",
+    "jlpt": [
+      "jlpt-n2",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "言う": {
+    "word": "言う",
+    "reading": "いう",
+    "meaning": "to say; to utter; to name; to call; to go (e.g. \"the alarm went ping\")",
+    "part_of_speech": "Godan verb with 'u' ending",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "飲む": {
+    "word": "飲む",
+    "reading": "のむ",
+    "meaning": "to drink; to swallow; to smoke (tobacco); to swallow up; to engulf",
+    "part_of_speech": "Godan verb with 'mu' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "練習": {
+    "word": "練習",
+    "reading": "れんしゅう",
+    "meaning": "practice; training",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "何": {
+    "word": "何",
+    "reading": "なに",
+    "meaning": "what; you-know-what; that thing; whatsit; whachamacallit",
+    "part_of_speech": "Pronoun",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "厚い": {
+    "word": "厚い",
+    "reading": "あつい",
+    "meaning": "thick; deep; kind; cordial; serious (of an illness)",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "毎月": {
+    "word": "毎月",
+    "reading": "まいつき",
+    "meaning": "every month; each month",
+    "part_of_speech": "Adverb (fukushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "閉まる": {
+    "word": "閉まる",
+    "reading": "しまる",
+    "meaning": "to be shut; to close; to be firm (of a body, face, etc.); to be well-knit; to be locked",
+    "part_of_speech": "Godan verb with 'ru' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "脱ぐ": {
+    "word": "脱ぐ",
+    "reading": "ぬぐ",
+    "meaning": "to take off (clothes, shoes, etc.); to undress",
+    "part_of_speech": "Godan verb with 'gu' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "黒い": {
+    "word": "黒い",
+    "reading": "くろい",
+    "meaning": "black; dark; blackish; suspicious; criminal",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "登る": {
+    "word": "登る",
+    "reading": "のぼる",
+    "meaning": "to ascend; to go up; to ascend (as a natural process, e.g. the Sun); to rise; to go to (the capital)",
+    "part_of_speech": "Godan verb with 'ru' ending",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n2",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "汚い": {
+    "word": "汚い",
+    "reading": "きたない",
+    "meaning": "dirty; filthy; disordered; messy; indecent (language, etc.)",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "雨": {
+    "word": "雨",
+    "reading": "あめ",
+    "meaning": "rain; rainy day; rainy weather; the November suit (in hanafuda)",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "お皿": {
+    "word": "お皿",
+    "reading": "おさら",
+    "meaning": "plate; dish",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": false
+  },
+  "速い": {
+    "word": "速い",
+    "reading": "はやい",
+    "meaning": "fast; quick; early; soon; premature",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "お風呂": {
+    "word": "お風呂",
+    "reading": "おふろ",
+    "meaning": "bath",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "新しい": {
+    "word": "新しい",
+    "reading": "あたらしい",
+    "meaning": "new; novel",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "廊下": {
+    "word": "廊下",
+    "reading": "ろうか",
+    "meaning": "corridor; hallway",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "茶色": {
+    "word": "茶色",
+    "reading": "ちゃいろ",
+    "meaning": "brown; light brown; Brown",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "コート": {
+    "word": "コート",
+    "reading": "コート",
+    "meaning": "coat; coating",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "手紙": {
+    "word": "手紙",
+    "reading": "てがみ",
+    "meaning": "letter; note; Letter (message)",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "要る": {
+    "word": "要る",
+    "reading": "いる",
+    "meaning": "to be needed; to be necessary",
+    "part_of_speech": "Godan verb with 'ru' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "こっち": {
+    "word": "こっち",
+    "reading": "こちら",
+    "meaning": "this way; this direction; here; this (one)",
+    "part_of_speech": "Pronoun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "スプーン": {
+    "word": "スプーン",
+    "reading": "スプーン",
+    "meaning": "spoon; spoon lure; Spoon",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "時々": {
+    "word": "時々",
+    "reading": "ときどき",
+    "meaning": "sometimes; occasionally; seasonal; of the season",
+    "part_of_speech": "Adverb (fukushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "傘": {
+    "word": "傘",
+    "reading": "かさ",
+    "meaning": "umbrella; parasol; something shaped like an umbrella or a conical hat; shade (of a lamp); Umbrella",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "いい/よい": {
+    "word": "いい/よい",
+    "reading": "よい",
+    "meaning": "good; excellent; sufficient; enough; profitable (deal, business offer, etc.)",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "電話": {
+    "word": "電話",
+    "reading": "でんわ",
+    "meaning": "telephone call; phone call; telephone (device); phone; Telephony",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "勤める": {
+    "word": "勤める",
+    "reading": "つとめる",
+    "meaning": "to work (for, at, in); to be employed (at); to finish (a term); to serve (e.g. a sentence); to conduct (a ceremony)",
+    "part_of_speech": "Ichidan verb",
+    "jlpt": [
+      "jlpt-n2",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "安い": {
+    "word": "安い",
+    "reading": "やすい",
+    "meaning": "cheap; inexpensive; calm; peaceful",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "どう": {
+    "word": "どう",
+    "reading": "どう",
+    "meaning": "copper (Cu); bronze (medal); Copper",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n2",
+      "jlpt-n1"
+    ],
+    "is_common": true
+  },
+  "道": {
+    "word": "道",
+    "reading": "みち",
+    "meaning": "road; path; route; way; distance",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "バス": {
+    "word": "バス",
+    "reading": "バス",
+    "meaning": "bus; bus; Bath (Britain); Basse",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "クラス": {
+    "word": "クラス",
+    "reading": "クラス",
+    "meaning": "class; Kras (Slovenia); Crass; Class",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "差す": {
+    "word": "差す",
+    "reading": "さす",
+    "meaning": "to shine; to be visible; to be tinged with",
+    "part_of_speech": "Godan verb with 'su' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "スポーツ": {
+    "word": "スポーツ",
+    "reading": "スポーツ",
+    "meaning": "sport; sports; Sport",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "どっち": {
+    "word": "どっち",
+    "reading": "どちら",
+    "meaning": "which way; which direction; which one (esp. of two alternatives); who",
+    "part_of_speech": "Pronoun",
+    "jlpt": [
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "そば": {
+    "word": "そば",
+    "reading": "そば",
+    "meaning": "buckwheat (Fagopyrum esculentum); soba; Japanese buckwheat noodles; Chinese-style wheat noodles",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n2"
+    ],
+    "is_common": true
+  },
+  "新聞": {
+    "word": "新聞",
+    "reading": "しんぶん",
+    "meaning": "newspaper; Newspaper",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "どうして": {
+    "word": "どうして",
+    "reading": "どうして",
+    "meaning": "how; in what way; why; for what reason; cannot possibly",
+    "part_of_speech": "Adverb (fukushi)",
+    "jlpt": [
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "庭": {
+    "word": "庭",
+    "reading": "にわ",
+    "meaning": "garden; yard; field (of action); area",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "大きな": {
+    "word": "大きな",
+    "reading": "おおきな",
+    "meaning": "big; large",
+    "part_of_speech": "Pre-noun adjectival (rentaishi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "辺": {
+    "word": "辺",
+    "reading": "へん",
+    "meaning": "area; vicinity; side; edge; circumstances",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "番号": {
+    "word": "番号",
+    "reading": "ばんごう",
+    "meaning": "number; series of digits",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "家族": {
+    "word": "家族",
+    "reading": "かぞく",
+    "meaning": "family; Family",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "下手": {
+    "word": "下手",
+    "reading": "へた",
+    "meaning": "unskillful; poor; imprudent; untactful",
+    "part_of_speech": "Na-adjective (keiyodoshi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "料理": {
+    "word": "料理",
+    "reading": "りょうり",
+    "meaning": "cooking; cookery; dealing with (skillfully); handling (well); Cuisine",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "カレー": {
+    "word": "カレー",
+    "reading": "カレー",
+    "meaning": "curry (esp. Japanese curry); rice and curry",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "六": {
+    "word": "六",
+    "reading": "ろく",
+    "meaning": "six; 6",
+    "part_of_speech": "Numeric",
+    "jlpt": [
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "今年": {
+    "word": "今年",
+    "reading": "ことし",
+    "meaning": "this year",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "初めて": {
+    "word": "初めて",
+    "reading": "はじめて",
+    "meaning": "for the first time; only after ... is it ...; only when ... do you ...; first time; (one's) first",
+    "part_of_speech": "Adverb (fukushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "風邪": {
+    "word": "風邪",
+    "reading": "かぜ",
+    "meaning": "(common) cold; influenza; Common cold",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "赤い": {
+    "word": "赤い",
+    "reading": "あかい",
+    "meaning": "red; crimson; Red; communist",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "甘い": {
+    "word": "甘い",
+    "reading": "あまい",
+    "meaning": "sweet-tasting; sweet; fragrant (smelling); sweet (music); lightly salted",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "西": {
+    "word": "西",
+    "reading": "にし",
+    "meaning": "west; West",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "毎週": {
+    "word": "毎週",
+    "reading": "まいしゅう",
+    "meaning": "every week",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "いつも": {
+    "word": "いつも",
+    "reading": "いつも",
+    "meaning": "always; all the time; never; usual; regular",
+    "part_of_speech": "Adverb (fukushi)",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "五つ": {
+    "word": "五つ",
+    "reading": "いつつ",
+    "meaning": "five; five years of age; eight o'clock (old time system)",
+    "part_of_speech": "Numeric",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "建物": {
+    "word": "建物",
+    "reading": "たてもの",
+    "meaning": "building",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "なる": {
+    "word": "なる",
+    "reading": "なる",
+    "meaning": "to become; to get; to result in; to turn out; to consist of",
+    "part_of_speech": "Godan verb with 'ru' ending",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "まっすぐ": {
+    "word": "まっすぐ",
+    "reading": "まっすぐ",
+    "meaning": "straight (ahead); direct; straightforward; honest",
+    "part_of_speech": "Na-adjective (keiyodoshi)",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "作る": {
+    "word": "作る",
+    "reading": "つくる",
+    "meaning": "to make; to produce; to prepare (food); to brew (alcohol); to raise",
+    "part_of_speech": "Godan verb with 'ru' ending",
+    "jlpt": [
+      "jlpt-n2",
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "風": {
+    "word": "風",
+    "reading": "かぜ",
+    "meaning": "wind; breeze; manner; behaviour; cold",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "少し": {
+    "word": "少し",
+    "reading": "すこし",
+    "meaning": "a little; a bit; a little while; a short time; a little way",
+    "part_of_speech": "Adverb (fukushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "大学": {
+    "word": "大学",
+    "reading": "だいがく",
+    "meaning": "university; college; former imperial university of Japan (established under the ritsuryō system for the training of government administrators); the Great Learning (one of the Four Books)",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "シャツ": {
+    "word": "シャツ",
+    "reading": "シャツ",
+    "meaning": "shirt (undergarment); undershirt; shirt (outerwear; usu. with collar and buttons); Shirt",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "病院": {
+    "word": "病院",
+    "reading": "びょういん",
+    "meaning": "hospital; clinic; Hospital",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "会社": {
+    "word": "会社",
+    "reading": "かいしゃ",
+    "meaning": "company; corporation; one's workplace; Company",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "無くす": {
+    "word": "無くす",
+    "reading": "なくす",
+    "meaning": "to lose (something); to get rid of; to eliminate",
+    "part_of_speech": "Godan verb with 'su' ending",
+    "jlpt": [
+      "jlpt-n2",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "スリッパ": {
+    "word": "スリッパ",
+    "reading": "スリッパ",
+    "meaning": "slipper; slippers; Slipper",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "地下鉄": {
+    "word": "地下鉄",
+    "reading": "ちかてつ",
+    "meaning": "subway; metro; Rapid transit",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "ページ": {
+    "word": "ページ",
+    "reading": "ページ",
+    "meaning": "page; nth page; page ...",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "曇る": {
+    "word": "曇る",
+    "reading": "くもる",
+    "meaning": "to get cloudy; to cloud over; to cloud up; to fog up; to be gloomy",
+    "part_of_speech": "Godan verb with 'ru' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "辞書": {
+    "word": "辞書",
+    "reading": "じしょ",
+    "meaning": "dictionary; lexicon; letter of resignation",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "万年筆": {
+    "word": "万年筆",
+    "reading": "まんねんひつ",
+    "meaning": "fountain pen; Fountain pen",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "海": {
+    "word": "海",
+    "reading": "うみ",
+    "meaning": "sea; ocean; Sea",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "エレベーター": {
+    "word": "エレベーター",
+    "reading": "エレベーター",
+    "meaning": "elevator; lift; elevator; Elevator",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "たぶん": {
+    "word": "たぶん",
+    "reading": "たぶん",
+    "meaning": "probably; likely; a lot of; much",
+    "part_of_speech": "Adverb (fukushi)",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "夕方": {
+    "word": "夕方",
+    "reading": "ゆうがた",
+    "meaning": "early evening (usu. from 3pm to 6pm); dusk",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "東": {
+    "word": "東",
+    "reading": "ひがし",
+    "meaning": "east",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "声": {
+    "word": "声",
+    "reading": "こえ",
+    "meaning": "voice; singing (of a bird); chirping (of an insect); voice; opinion (as expressed in words)",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "撮る": {
+    "word": "撮る",
+    "reading": "とる",
+    "meaning": "to take (a photograph); to record (audio or video); to film",
+    "part_of_speech": "Godan verb with 'ru' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "私": {
+    "word": "私",
+    "reading": "わたし",
+    "meaning": "I; me",
+    "part_of_speech": "Pronoun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "両親": {
+    "word": "両親",
+    "reading": "りょうしん",
+    "meaning": "parents; both parents",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "きれい": {
+    "word": "きれい",
+    "reading": "きれい",
+    "meaning": "pretty; lovely; clean; clear; completely",
+    "part_of_speech": "Na-adjective (keiyodoshi)",
+    "jlpt": [
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "どうぞ": {
+    "word": "どうぞ",
+    "reading": "どうぞ",
+    "meaning": "please; kindly; by all means; certainly; here you are",
+    "part_of_speech": "Adverb (fukushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "好き": {
+    "word": "好き",
+    "reading": "すき",
+    "meaning": "liking; being fond of; liking (romantically); being in love with; faddism",
+    "part_of_speech": "Na-adjective (keiyodoshi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "静か": {
+    "word": "静か",
+    "reading": "しずか",
+    "meaning": "quiet; silent; slow; unhurried; calm",
+    "part_of_speech": "Na-adjective (keiyodoshi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "お父さん": {
+    "word": "お父さん",
+    "reading": "おとうさん",
+    "meaning": "father; dad; husband; you (of an elderly person older than the speaker); he",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "人": {
+    "word": "人",
+    "reading": "ひと",
+    "meaning": "person; someone; human beings; mankind; human (Homo sapiens)",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "覚える": {
+    "word": "覚える",
+    "reading": "おぼえる",
+    "meaning": "to memorize; to memorise; to learn; to pick up; to feel",
+    "part_of_speech": "Ichidan verb",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "休み": {
+    "word": "休み",
+    "reading": "やすみ",
+    "meaning": "rest; recess; vacation; holiday; dormancy (of a silkworm prior to moulting)",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "池": {
+    "word": "池",
+    "reading": "いけ",
+    "meaning": "pond; Pond",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "始まる": {
+    "word": "始まる",
+    "reading": "はじまる",
+    "meaning": "to begin; to start; to happen (again); to begin (anew); to date (from)",
+    "part_of_speech": "Godan verb with 'ru' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "困る": {
+    "word": "困る",
+    "reading": "こまる",
+    "meaning": "to be troubled; to have difficulty; to be bothered; to be inconvenienced; to be badly off",
+    "part_of_speech": "Godan verb with 'ru' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "ほか": {
+    "word": "ほか",
+    "reading": "ほか",
+    "meaning": "another place; some other place; another (person or thing); other; beyond (one's expectations, imagination, etc.)",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "ちゃわん": {
+    "word": "ちゃわん",
+    "reading": "ちゃわん",
+    "meaning": "rice bowl; tea cup; Chawan",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n2",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "疲れる": {
+    "word": "疲れる",
+    "reading": "つかれる",
+    "meaning": "to get tired; to tire; to become worn out (of a well-used object); to starve",
+    "part_of_speech": "Ichidan verb",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "掃除": {
+    "word": "掃除",
+    "reading": "そうじ",
+    "meaning": "cleaning; sweeping; Cleanliness",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "賑やか": {
+    "word": "賑やか",
+    "reading": "にぎやか",
+    "meaning": "bustling; busy; lively (party, voices, etc.); loud",
+    "part_of_speech": "Na-adjective (keiyodoshi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "一つ": {
+    "word": "一つ",
+    "reading": "ひとつ",
+    "meaning": "one; for one thing; only",
+    "part_of_speech": "Numeric",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "来週": {
+    "word": "来週",
+    "reading": "らいしゅう",
+    "meaning": "next week",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "財布": {
+    "word": "財布",
+    "reading": "さいふ",
+    "meaning": "wallet; purse; Wallet",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "知る": {
+    "word": "知る",
+    "reading": "しる",
+    "meaning": "to know; to be aware (of); to sense; to feel; to understand",
+    "part_of_speech": "Godan verb with 'ru' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "教える": {
+    "word": "教える",
+    "reading": "おしえる",
+    "meaning": "to teach; to instruct; to tell; to inform; to preach",
+    "part_of_speech": "Ichidan verb",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "朝御飯": {
+    "word": "朝御飯",
+    "reading": "あさごはん",
+    "meaning": "breakfast",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "飛ぶ": {
+    "word": "飛ぶ",
+    "reading": "とぶ",
+    "meaning": "to fly; to soar; to jump; to leap; to spatter",
+    "part_of_speech": "Godan verb with 'bu' ending",
+    "jlpt": [
+      "jlpt-n2",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "言葉": {
+    "word": "言葉",
+    "reading": "ことば",
+    "meaning": "language; dialect; word; phrase; speech",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "キロ/キログラム": {
+    "word": "キロ/キログラム",
+    "reading": "キロ",
+    "meaning": "kilo-; 1000; kilogram; kilogramme; kilometre",
+    "part_of_speech": "Prefix",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "赤": {
+    "word": "赤",
+    "reading": "あか",
+    "meaning": "red; crimson; red-containing colour (e.g. brown, pink, orange); Red (i.e. communist)",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "自分": {
+    "word": "自分",
+    "reading": "じぶん",
+    "meaning": "myself; yourself; I; me; you",
+    "part_of_speech": "Pronoun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "デパート": {
+    "word": "デパート",
+    "reading": "デパート",
+    "meaning": "department store; department",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "薄い": {
+    "word": "薄い",
+    "reading": "うすい",
+    "meaning": "thin (of an object); pale; light; watery; thin",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "高い": {
+    "word": "高い",
+    "reading": "たかい",
+    "meaning": "high; tall; expensive; high-priced; high (level)",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "帰る": {
+    "word": "帰る",
+    "reading": "かえる",
+    "meaning": "to return; to come home; to leave (of a guest, customer, etc.); to get home; to get to home plate",
+    "part_of_speech": "Godan verb with 'ru' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "はい": {
+    "word": "はい",
+    "reading": "はい",
+    "meaning": "ash; ashes; Ash (analytical chemistry)",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n3"
+    ],
+    "is_common": true
+  },
+  "卵": {
+    "word": "卵",
+    "reading": "たまご",
+    "meaning": "eggs; egg; (hen's) egg; a ... in the making; future (lawyer, doctor, etc.)",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "低い": {
+    "word": "低い",
+    "reading": "ひくい",
+    "meaning": "low (rank, degree, value, content, quality, etc.); low (position); close to the ground; short (height)",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "なぜ": {
+    "word": "なぜ",
+    "reading": "なぜ",
+    "meaning": "why; how",
+    "part_of_speech": "Adverb (fukushi)",
+    "jlpt": [
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "一日": {
+    "word": "一日",
+    "reading": "いちにち",
+    "meaning": "one day; all day (long); the whole day; first day of the month",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "する": {
+    "word": "する",
+    "reading": "する",
+    "meaning": "to do; to carry out; to cause to become; to make (into); to serve as",
+    "part_of_speech": "Suru verb - included",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "ある": {
+    "word": "ある",
+    "reading": "ある",
+    "meaning": "to be; to exist; to have; to be located",
+    "part_of_speech": "Godan verb with 'ru' ending (irregular verb)",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n2",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "いいえ": {
+    "word": "いいえ",
+    "reading": "いいえ",
+    "meaning": "no; you're welcome; not at all",
+    "part_of_speech": "",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "小さな": {
+    "word": "小さな",
+    "reading": "ちいさな",
+    "meaning": "small; little",
+    "part_of_speech": "Pre-noun adjectival (rentaishi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "時間": {
+    "word": "時間",
+    "reading": "じかん",
+    "meaning": "time; hour; period; class",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "上げる": {
+    "word": "上げる",
+    "reading": "あげる",
+    "meaning": "to raise; to elevate; to move something (to a higher place); to put onto (e.g. a shelf); to increase (price, quality, status, etc.)",
+    "part_of_speech": "Ichidan verb",
+    "jlpt": [
+      "jlpt-n4",
+      "jlpt-n2",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "ふろ": {
+    "word": "ふろ",
+    "reading": "ふろ",
+    "meaning": "bath; bathing; bathhouse; public bath; room for drying lacquerware",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "生徒": {
+    "word": "生徒",
+    "reading": "せいと",
+    "meaning": "pupil; student",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "レストラン": {
+    "word": "レストラン",
+    "reading": "レストラン",
+    "meaning": "restaurant (esp. Western-style); Restaurant",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "出す": {
+    "word": "出す",
+    "reading": "だす",
+    "meaning": "to take out; to get out; to put out; to reveal; to submit (e.g. thesis)",
+    "part_of_speech": "Godan verb with 'su' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "かわいい": {
+    "word": "かわいい",
+    "reading": "かわいい",
+    "meaning": "cute; adorable; dear; precious; innocent",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "音楽": {
+    "word": "音楽",
+    "reading": "おんがく",
+    "meaning": "music; Music",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "歌": {
+    "word": "歌",
+    "reading": "うた",
+    "meaning": "song; singing; classical Japanese poem (esp. tanka); modern poetry",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "いちばん": {
+    "word": "いちばん",
+    "reading": "いちばん",
+    "meaning": "number one; first; best; most; game",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "咲く": {
+    "word": "咲く",
+    "reading": "さく",
+    "meaning": "to bloom; to flower; to rise up (of breaking waves)",
+    "part_of_speech": "Godan verb with 'ku' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "山": {
+    "word": "山",
+    "reading": "やま",
+    "meaning": "mountain; hill; mine; (mountain) forest",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "テレビ": {
+    "word": "テレビ",
+    "reading": "テレビ",
+    "meaning": "television; TV; TV program; TV programme; Television",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "授業": {
+    "word": "授業",
+    "reading": "じゅぎょう",
+    "meaning": "lesson; class; Lesson",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "暖かい": {
+    "word": "暖かい",
+    "reading": "あたたかい",
+    "meaning": "warm; mild; considerate; kind; warm (of a colour)",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "セーター": {
+    "word": "セーター",
+    "reading": "セーター",
+    "meaning": "sweater; jumper; Sweater",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "自転車": {
+    "word": "自転車",
+    "reading": "じてんしゃ",
+    "meaning": "bicycle; bike; Bicycle",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "ラジカセ / ラジオカセット": {
+    "word": "ラジカセ / ラジオカセット",
+    "reading": "ラジカセ",
+    "meaning": "radio-cassette player",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "つける": {
+    "word": "つける",
+    "reading": "つける",
+    "meaning": "to attach; to join; to furnish (a house with); to wear; to put on",
+    "part_of_speech": "Ichidan verb",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n2",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "さ来年": {
+    "word": "さ来年",
+    "reading": "さらいねん",
+    "meaning": "year after next",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n2",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "学校": {
+    "word": "学校",
+    "reading": "がっこう",
+    "meaning": "school; Gakkou; School",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "いくら": {
+    "word": "いくら",
+    "reading": "いくら",
+    "meaning": "how much; something over; and something; however (much); no matter how",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "四": {
+    "word": "四",
+    "reading": "し",
+    "meaning": "four; 4",
+    "part_of_speech": "Numeric",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "入る": {
+    "word": "入る",
+    "reading": "はいる",
+    "meaning": "to enter; to come in; to join (a club, company, etc.); to enter (a university, the army, etc.); to be contained (in)",
+    "part_of_speech": "Godan verb with 'ru' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "曇り": {
+    "word": "曇り",
+    "reading": "くもり",
+    "meaning": "cloudiness; cloudy weather; fog (on a mirror, glasses, etc.); cloud (e.g. in marble); gloom",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "外国": {
+    "word": "外国",
+    "reading": "がいこく",
+    "meaning": "foreign country",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "温い": {
+    "word": "温い",
+    "reading": "ぬるい",
+    "meaning": "lukewarm; tepid; lenient",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "そうして/そして": {
+    "word": "そうして/そして",
+    "reading": "そう",
+    "meaning": "monk; priest; sangha (the Buddhist community); Sangha",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n1"
+    ],
+    "is_common": true
+  },
+  "どうも": {
+    "word": "どうも",
+    "reading": "どうも",
+    "meaning": "thank you; thanks; much (thanks); very (sorry); quite",
+    "part_of_speech": "",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "仕事": {
+    "word": "仕事",
+    "reading": "しごと",
+    "meaning": "work; job; work; Work",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "窓": {
+    "word": "窓",
+    "reading": "まど",
+    "meaning": "window; Window",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "晩": {
+    "word": "晩",
+    "reading": "ばん",
+    "meaning": "evening; night; dinner; evening meal; counter for nights",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "難しい": {
+    "word": "難しい",
+    "reading": "むずかしい",
+    "meaning": "difficult; hard; impossible; unfeasible; fussy",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "村": {
+    "word": "村",
+    "reading": "むら",
+    "meaning": "village; Village",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "鉛筆": {
+    "word": "鉛筆",
+    "reading": "えんぴつ",
+    "meaning": "(wooden) pencil; Pencil",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "長い": {
+    "word": "長い",
+    "reading": "ながい",
+    "meaning": "long (distance, length); long (time); protracted",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n2",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "生まれる": {
+    "word": "生まれる",
+    "reading": "うまれる",
+    "meaning": "to be born",
+    "part_of_speech": "Ichidan verb",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "雑誌": {
+    "word": "雑誌",
+    "reading": "ざっし",
+    "meaning": "magazine; journal; Magazine",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "国": {
+    "word": "国",
+    "reading": "くに",
+    "meaning": "country; state; region; national government; central government",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "おまわりさん": {
+    "word": "おまわりさん",
+    "reading": "おまわりさん",
+    "meaning": "police officer",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "今朝": {
+    "word": "今朝",
+    "reading": "けさ",
+    "meaning": "this morning",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "晴れる": {
+    "word": "晴れる",
+    "reading": "はれる",
+    "meaning": "to clear up; to clear away; to refresh (e.g. spirits); to be cleared (e.g. of a suspicion)",
+    "part_of_speech": "Ichidan verb",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "夕飯": {
+    "word": "夕飯",
+    "reading": "ゆうはん",
+    "meaning": "evening meal; dinner",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "一緒": {
+    "word": "一緒",
+    "reading": "いっしょ",
+    "meaning": "(doing) together; one lump; one mixture; the same; identical",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "どれ": {
+    "word": "どれ",
+    "reading": "どれ",
+    "meaning": "which (of three or more); well; now",
+    "part_of_speech": "Pronoun",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "立つ": {
+    "word": "立つ",
+    "reading": "たつ",
+    "meaning": "to stand (up); to rise; to stand (in a position; of a person, tree, building, etc.); to be situated (in, on); to be (in difficulties, the lead, etc.)",
+    "part_of_speech": "Godan verb with 'tsu' ending",
+    "jlpt": [
+      "jlpt-n2",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "元気": {
+    "word": "元気",
+    "reading": "げんき",
+    "meaning": "lively; full of spirit; healthy; well",
+    "part_of_speech": "Na-adjective (keiyodoshi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "天気": {
+    "word": "天気",
+    "reading": "てんき",
+    "meaning": "weather; fair weather; fine weather",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "医者": {
+    "word": "医者",
+    "reading": "いしゃ",
+    "meaning": "doctor; physician",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "七": {
+    "word": "七",
+    "reading": "しち",
+    "meaning": "seven",
+    "part_of_speech": "Numeric",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "はく": {
+    "word": "はく",
+    "reading": "はく",
+    "meaning": "to put on (lower-body clothing, e.g. pants, skirt, footwear); to wear; to affix (a sword to one's hip); to affix (a bowstring to a bow)",
+    "part_of_speech": "Godan verb with 'ku' ending",
+    "jlpt": [
+      "jlpt-n3"
+    ],
+    "is_common": true
+  },
+  "だんだん": {
+    "word": "だんだん",
+    "reading": "だんだん",
+    "meaning": "gradually; by degrees; steps; stairs",
+    "part_of_speech": "Adverb (fukushi)",
+    "jlpt": [
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "戸": {
+    "word": "戸",
+    "reading": "と",
+    "meaning": "door (esp. Japanese-style); shutter; window shutter; entrance (to a home)",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "ノート": {
+    "word": "ノート",
+    "reading": "ノート",
+    "meaning": "notebook; copy-book; note; noting down; (musical) note",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "また": {
+    "word": "また",
+    "reading": "また",
+    "meaning": "again; once more; also; too; on the other hand",
+    "part_of_speech": "Adverb (fukushi)",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "今日": {
+    "word": "今日",
+    "reading": "きょう",
+    "meaning": "today; this day; these days; recently",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "とても": {
+    "word": "とても",
+    "reading": "とても",
+    "meaning": "very; awfully; (not) at all; by no means",
+    "part_of_speech": "Adverb (fukushi)",
+    "jlpt": [
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "一昨年": {
+    "word": "一昨年",
+    "reading": "おととし",
+    "meaning": "year before last",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n2",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "文章": {
+    "word": "文章",
+    "reading": "ぶんしょう",
+    "meaning": "writing; composition; sentence",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "公園": {
+    "word": "公園",
+    "reading": "こうえん",
+    "meaning": "(public) park; Park",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "借りる": {
+    "word": "借りる",
+    "reading": "かりる",
+    "meaning": "to borrow; to rent; to hire; to make use of (another's help, wisdom, etc.); to obtain",
+    "part_of_speech": "Ichidan verb",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "口": {
+    "word": "口",
+    "reading": "くち",
+    "meaning": "mouth; opening; hole; mouth (of a bottle); spout",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "持つ": {
+    "word": "持つ",
+    "reading": "もつ",
+    "meaning": "to hold (in one's hand); to take; to possess; to have; to maintain",
+    "part_of_speech": "Godan verb with 'tsu' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "上着": {
+    "word": "上着",
+    "reading": "うわぎ",
+    "meaning": "coat; jacket; top; upper-body garment",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "秋": {
+    "word": "秋",
+    "reading": "あき",
+    "meaning": "autumn; fall",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "悪い": {
+    "word": "悪い",
+    "reading": "わるい",
+    "meaning": "bad; poor; poor (quality); inferior; evil",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "青い": {
+    "word": "青い",
+    "reading": "あおい",
+    "meaning": "blue; azure; green; pale (facial color); gray",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "住む": {
+    "word": "住む",
+    "reading": "すむ",
+    "meaning": "to live (of humans); to reside",
+    "part_of_speech": "Godan verb with 'mu' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "かける": {
+    "word": "かける",
+    "reading": "かける",
+    "meaning": "to hang up (e.g. a coat, a picture on the wall); to let hang; to put on (e.g. a blanket); to put on top of; to put on (glasses, etc.)",
+    "part_of_speech": "Ichidan verb",
+    "jlpt": [
+      "jlpt-n4",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "木曜日": {
+    "word": "木曜日",
+    "reading": "もくようび",
+    "meaning": "Thursday; Thursday",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "忘れる": {
+    "word": "忘れる",
+    "reading": "わすれる",
+    "meaning": "to forget; to leave carelessly",
+    "part_of_speech": "Ichidan verb",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "お手洗い": {
+    "word": "お手洗い",
+    "reading": "おてあらい",
+    "meaning": "toilet; restroom",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "写真": {
+    "word": "写真",
+    "reading": "しゃしん",
+    "meaning": "photograph; photo; moving picture; movie; Photography",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "ゼロ": {
+    "word": "ゼロ",
+    "reading": "ゼロ",
+    "meaning": "zero; 0; nothing; zilch",
+    "part_of_speech": "Noun",
+    "jlpt": [],
+    "is_common": true
+  },
+  "いろいろ": {
+    "word": "いろいろ",
+    "reading": "いろいろ",
+    "meaning": "various; a variety of; variously; in various ways; various things",
+    "part_of_speech": "Na-adjective (keiyodoshi)",
+    "jlpt": [
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "もう": {
+    "word": "もう",
+    "reading": "もう",
+    "meaning": "already; yet; soon; shortly; further",
+    "part_of_speech": "Adverb (fukushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "会う": {
+    "word": "会う",
+    "reading": "あう",
+    "meaning": "to meet; to encounter; to have (e.g. an accident) to suffer (e.g. an unpleasant fate); to encounter",
+    "part_of_speech": "Godan verb with 'u' ending",
+    "jlpt": [
+      "jlpt-n2",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "南": {
+    "word": "南",
+    "reading": "みなみ",
+    "meaning": "south; South",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "五日": {
+    "word": "五日",
+    "reading": "いつか",
+    "meaning": "5th day of the month; five days; Itsuka",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "着る": {
+    "word": "着る",
+    "reading": "きる",
+    "meaning": "to wear (from the shoulders down); to put on; to take (the blame, responsibility); to bear",
+    "part_of_speech": "Ichidan verb",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "そこ": {
+    "word": "そこ",
+    "reading": "そこ",
+    "meaning": "there (place relatively near listener); there (place just mentioned); that place; then (of some incident just spoken of); that (of point just raised)",
+    "part_of_speech": "Pronoun",
+    "jlpt": [
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "終る": {
+    "word": "終る",
+    "reading": "おわる",
+    "meaning": "to end; to come to an end; to finish; to complete; to finish doing",
+    "part_of_speech": "Godan verb with 'ru' ending",
+    "jlpt": [
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "どの": {
+    "word": "どの",
+    "reading": "どの",
+    "meaning": "which; what (way)",
+    "part_of_speech": "Pre-noun adjectival (rentaishi)",
+    "jlpt": [
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "読む": {
+    "word": "読む",
+    "reading": "よむ",
+    "meaning": "to read; to recite (e.g. a sutra); to chant; to predict; to guess",
+    "part_of_speech": "Godan verb with 'mu' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "それでは": {
+    "word": "それでは",
+    "reading": "それでは",
+    "meaning": "well, ...; right, ...; so; then; that way (would mean ...)",
+    "part_of_speech": "Conjunction",
+    "jlpt": [
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "来月": {
+    "word": "来月",
+    "reading": "らいげつ",
+    "meaning": "next month",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "果物": {
+    "word": "果物",
+    "reading": "くだもの",
+    "meaning": "fruit",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "止まる": {
+    "word": "止まる",
+    "reading": "とまる",
+    "meaning": "to stop (moving); to come to a stop; to stop (doing, working, being supplied); to come to a halt; to alight",
+    "part_of_speech": "Godan verb with 'ru' ending",
+    "jlpt": [
+      "jlpt-n2",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "着く": {
+    "word": "着く",
+    "reading": "つく",
+    "meaning": "to arrive at; to reach; to sit on; to sit at (e.g. the table)",
+    "part_of_speech": "Godan verb with 'ku' ending",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "大好き": {
+    "word": "大好き",
+    "reading": "だいすき",
+    "meaning": "liking very much; loving (something or someone)",
+    "part_of_speech": "Na-adjective (keiyodoshi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "妹": {
+    "word": "妹",
+    "reading": "いもうと",
+    "meaning": "younger sister",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "夏": {
+    "word": "夏",
+    "reading": "なつ",
+    "meaning": "summer; Summer",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "今晩": {
+    "word": "今晩",
+    "reading": "こんばん",
+    "meaning": "tonight; this evening",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "塩": {
+    "word": "塩",
+    "reading": "しお",
+    "meaning": "salt; common salt; hardship; toil; saltiness",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "先週": {
+    "word": "先週",
+    "reading": "せんしゅう",
+    "meaning": "last week; the week before",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "欲しい": {
+    "word": "欲しい",
+    "reading": "ほしい",
+    "meaning": "wanting (to have); desiring; I want (you, them, etc.) to (do)",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "木": {
+    "word": "木",
+    "reading": "き",
+    "meaning": "tree; shrub; wood; timber; wooden clappers (signalling the beginning or end of a performance)",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "ほんとう": {
+    "word": "ほんとう",
+    "reading": "ほんとう",
+    "meaning": "truth; reality; proper; right; genuine",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "薬": {
+    "word": "薬",
+    "reading": "くすり",
+    "meaning": "medicine; pharmaceuticals; efficacious chemical (gunpowder, pesticide, etc.); (pottery) glaze",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "お菓子": {
+    "word": "お菓子",
+    "reading": "おかし",
+    "meaning": "confections; sweets",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "金曜日": {
+    "word": "金曜日",
+    "reading": "きんようび",
+    "meaning": "Friday; Friday",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "まずい": {
+    "word": "まずい",
+    "reading": "まずい",
+    "meaning": "bad(-tasting); unpalatable; poor; unskillful; ugly",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n1",
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "お酒": {
+    "word": "お酒",
+    "reading": "おさけ",
+    "meaning": "alcohol; sake",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": false
+  },
+  "多い": {
+    "word": "多い",
+    "reading": "おおい",
+    "meaning": "many; numerous; large amount of; large quantity of; frequent",
+    "part_of_speech": "I-adjective (keiyoushi)",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "動物": {
+    "word": "動物",
+    "reading": "どうぶつ",
+    "meaning": "animal; Animal",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "切符": {
+    "word": "切符",
+    "reading": "きっぷ",
+    "meaning": "ticket; Ticket",
+    "part_of_speech": "Noun",
+    "jlpt": [
+      "jlpt-n5"
+    ],
+    "is_common": true
+  },
+  "キロ/キロメートル": {
+    "word": "キロ/キロメートル",
+    "reading": "キロ",
+    "meaning": "kilo-; 1000; kilogram; kilogramme; kilometre",
+    "part_of_speech": "Prefix",
+    "jlpt": [
+      "jlpt-n3",
+      "jlpt-n5"
+    ],
+    "is_common": true
   }
 }

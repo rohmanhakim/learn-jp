@@ -41,7 +41,8 @@ class JishoClient:
         # API request
         response = requests.get(
             self.BASE_URL,
-            params={"keyword": word}
+            params={"keyword": word},
+            timeout=15,
         )
         
         if response.status_code != 200:
@@ -64,11 +65,12 @@ class JishoClient:
             defs = sense.get("english_definitions", [])
             all_meanings.extend(defs[:2])  # Up to 2 defs per sense
         
+        pos_list = senses[0].get("parts_of_speech", []) if senses else []
         result = {
             "word": word,
             "reading": japanese.get("reading", ""),
             "meaning": "; ".join(all_meanings[:5]),  # Top 5 meanings
-            "part_of_speech": senses[0].get("parts_of_speech", [""])[0] if senses else "",
+            "part_of_speech": pos_list[0] if pos_list else "",
             "jlpt": first.get("jlpt", []),
             "is_common": first.get("is_common", False)
         }
