@@ -424,6 +424,13 @@ Provides kanji data:
 - Grade level (Japanese school grade)
 - Stroke count
 
+**Files:**
+- `data/kanji/kanjidic2.xml.gz` — KANJIDIC2 dictionary (gitignored; download with `scripts/fetch_kanjidic.py`)
+- `lib/kanjidic_client.py` — in-memory XML parser; `lookup(kanji)` returns on/kun readings, meanings, JLPT, grade, strokes
+- `scripts/seed_kanji.py` — upserts vocab-derived kanji into the `kanji` table (level = earliest vocab level containing the char; grade is render-time only, not stored in schema)
+
+The `kanji` table schema (`progress/schema.sql`) stores `on_reading`, `kun_reading`, `meanings`, `level`, `stroke_count`; grade is available from KANJIDICClient at render time but is not a schema column.
+
 ### Example Sentence Gap
 Example sentences are available on Jisho web pages but not via API. For the current version:
 - Cards will not include example sentences

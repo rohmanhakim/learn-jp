@@ -14,6 +14,8 @@ progress/progress.db-shm
 
 # Cache
 data/cache/
+# KANJIDIC dictionary (third-party reference data)
+data/kanji/
 
 # API keys
 *.api-key

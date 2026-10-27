@@ -441,16 +441,16 @@ python scripts/add_vocab.py --words "勉強する,宿題,先生" --dry-run
 ### Content Pipeline
 - [x] Create JLPTFetcher class
 - [x] Test JLPT vocabulary fetching
-- [ ] Download KANJIDIC data file
-- [ ] Create KANJIDICClient class
+- [x] Download KANJIDIC data file (`scripts/fetch_kanjidic.py`, `data/kanji/kanjidic2.xml.gz`)
+- [x] Create KANJIDICClient class (`lib/kanjidic_client.py`)
 - [ ] Update JishoClient to return richer data (multiple meanings, notes)
-- [ ] Create seed_anki.py script with kanji enrichment
+- ~[ ]~ Create seed_anki.py script with kanji enrichment — superseded: kanji seeding lives in `scripts/seed_kanji.py` (kanji table) and card enrichment in `scripts/push_anki.py` (kanji breakdown on pushed notes)
 - [ ] Create add_vocab.py script
-- [ ] Test KANJIDIC kanji lookup
-- [ ] Test seeding to Anki (dry run)
+- [x] Test KANJIDIC kanji lookup (verified 暖, 山, unknown-kanji → None)
+- [ ] Test seeding to Anki (dry run verified; live push awaits AnkiConnect)
 - [ ] Test adding custom vocabulary
-- [ ] Handle rate limiting
-- [ ] Handle errors gracefully
+- [ ] Handle rate limiting (JishoClient 1 req/s sleep; KANJIDIC is offline XML)
+- [ ] Handle errors gracefully (push_anki batch fallback + missing-KANJIDIC degradation)
 
 ### CLI Entry Point (NEW)
 - [ ] Create `learn_jp/cli.py` - main CLI module
@@ -462,7 +462,18 @@ python scripts/add_vocab.py --words "勉強する,宿題,先生" --dry-run
 - [ ] Add pyproject.toml entry point for CLI
 - [ ] Test CLI commands end-to-end
 
+### Data-layer implementation notes (A1–A6, complete)
+
+**Vocab seeding (A1):** `scripts/seed_db.py --level all --no-jisho` seeded N4–N1 (7,672 rows). Full vocabulary: 8,334 rows across N1–N5. Enrichment backfill is chunked via `--enrich-missing --limit N` (A2) — no sleep-polling; completion is a `SELECT COUNT(*) FROM vocabulary WHERE reading IS NULL` query.
+
+**KANJIDIC (A3–A4):** `scripts/fetch_kanjidic.py` downloads `data/kanji/kanjidic2.xml.gz` (gitignored). `lib/kanjidic_client.py` parses it into an in-memory index; `lookup(kanji)` returns on/kun readings, meanings, JLPT, grade, strokes. Verified: `暖` → ダン/ノン, あたた.か/あたた.かい, warmth, jlpt 2, grade 6, 13 strokes.
+
+**Kanji table (A5):** `scripts/seed_kanji.py` upserts 2,091 vocab-derived kanji into the `kanji` table (per-level: n5 418, n4 310, n3 578, n2 326, n1 459). Idempotent via `ON CONFLICT`.
+
+**Anki cards (A6):** `scripts/push_anki.py` gained `--no-kanji`; with kanji data present, new notes get the documented back-field HTML (reading box, meaning section, kanji breakdown block with JLPT/grade/strokes). Missing KANJIDIC data degrades gracefully to plain cards. The 662 already-pushed N5 notes keep their original format.
+
 ---
+
 
 ## CLI Design
 

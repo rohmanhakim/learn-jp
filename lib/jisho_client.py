@@ -15,6 +15,7 @@ class JishoClient:
     
     def __init__(self):
         self.cache = self._load_cache()
+        self._dirty_count = 0
     
     def _load_cache(self) -> dict:
         """Load API response cache."""
@@ -77,9 +78,16 @@ class JishoClient:
         
         # Cache result
         self.cache[word] = result
-        self._save_cache()
-        
+        self._dirty_count += 1
+        if self._dirty_count >= 25:
+            self.flush()
+
         return result
+
+    def flush(self) -> None:
+        """Persist the in-memory cache to disk (call periodically / at shutdown)."""
+        self._save_cache()
+        self._dirty_count = 0
     
     def lookup_batch(self, words: List[str]) -> List[dict]:
         """Look up multiple words."""

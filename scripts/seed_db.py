@@ -114,6 +114,81 @@ def seed_level(level: str, jisho: JishoClient | None,
     return inserted
 
 
+def enrich_missing(
+    level: str | None,
+    jisho: JishoClient,
+    db: sqlite3.Connection,
+    limit: int | None = None,
+    dry_run: bool = False,
+) -> int:
+    """Enrichment-only mode: fill reading/part_of_speech/meaning for existing
+    rows via Jisho lookups. Idempotent and resumable — only rows still missing
+    data are touched, so a run can be killed and re-run safely.
+    """
+    where = (
+        "WHERE (reading IS NULL OR reading = '' "
+        "OR part_of_speech IS NULL OR part_of_speech = '')"
+    )
+    params: list = []
+    if level:
+        where += " AND level = ?"
+        params.append(level)
+    if limit:
+        where += " LIMIT ?"
+        params.append(limit)
+
+    rows = db.execute(
+        f"SELECT item_id, content FROM vocabulary {where}", params
+    ).fetchall()
+    print(f"  {len(rows)} rows need enrichment" + (f" (limit={limit})" if limit else ""))
+
+    enriched = 0
+    skipped = 0
+    for row in rows:
+        content = row["content"]
+        item_id = row["item_id"]
+        try:
+            result = jisho.lookup(content)
+        except Exception as e:
+            print(f"    [warn] Jisho failed for {content}: {e}", file=sys.stderr)
+            skipped += 1
+            continue
+
+        if not result:
+            skipped += 1
+            continue
+
+        reading = result.get("reading") or None
+        pos = result.get("part_of_speech") or None
+        meaning = result.get("meaning") or None
+
+        if not dry_run:
+            db.execute(
+                """
+                UPDATE vocabulary
+                   SET reading = COALESCE(?, reading),
+                       part_of_speech = COALESCE(?, part_of_speech),
+                       meaning = COALESCE(?, meaning),
+                       updated_at = datetime('now')
+                 WHERE item_id = ?
+                """,
+                (reading, pos, meaning, item_id),
+            )
+
+        enriched += 1
+
+        if not dry_run and enriched % 50 == 0:
+            db.commit()
+            print(f"    committed {enriched} rows so far")
+
+    if not dry_run:
+        db.commit()
+        jisho.flush()
+
+    print(f"    enriched={enriched} skipped={skipped}")
+    return enriched
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Seed JLPT vocabulary into progress DB"
@@ -130,15 +205,41 @@ def main():
         "--dry-run", action="store_true",
         help="Show what would be done without writing",
     )
+    parser.add_argument(
+        "--enrich-missing", action="store_true",
+        help="Enrichment-only mode: fill reading/part_of_speech/meaning for "
+             "existing rows via Jisho (no new inserts).",
+    )
+    parser.add_argument(
+        "--limit", type=int, default=None,
+        help="Max rows to enrich in this run (pairs with --enrich-missing).",
+    )
     args = parser.parse_args()
 
     levels = LEVELS if args.level == "all" else [args.level]
+
+    if args.enrich_missing and args.no_jisho:
+        print("--enrich-missing requires Jisho; drop --no-jisho.", file=sys.stderr)
+        return 1
 
     jisho = None if args.no_jisho else JishoClient()
 
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     db = sqlite3.connect(str(DB_PATH))
     db.row_factory = sqlite3.Row
+
+    if args.enrich_missing:
+        total = 0
+        for level in levels:
+            print(f"== {level.upper()} enrichment")
+            total += enrich_missing(
+                level, jisho, db, limit=args.limit, dry_run=args.dry_run,
+            )
+        if not args.dry_run:
+            jisho.flush()
+        db.close()
+        print(f"\nTotal rows enriched: {total}")
+        return 0
 
     total = 0
     for level in levels:
