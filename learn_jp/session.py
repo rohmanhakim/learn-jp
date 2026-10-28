@@ -183,14 +183,18 @@ class SessionManager:
 
     @staticmethod
     def _severity_from_entry(entry: dict) -> int:
-        """Best-effort mapping of an Anki review entry to severity 0-3.
+        """Map an Anki revlog entry to severity 0-3.
 
         severity: 0 = easy, 1 = good, 2 = hard, 3 = again / failed.
 
+        Anki revlog ease: 1 = again, 2 = hard, 3 = good, 4 = easy.
+        Falls back to the revlog type when ``ease`` is unavailable.
+
         Anki revlog types: 0 = learn, 1 = relearn, 2 = review, 3 = cram.
-        This is a heuristic and should be refined against real
-        AnkiConnect 'getReviews' payloads.
         """
+        ease = entry.get("ease")
+        if ease is not None:
+            return {1: 3, 2: 2, 3: 1, 4: 0}.get(int(ease), 1)
         rtype = entry.get("type")
         if rtype in (1, 3):
             return 3  # relearn / cram: previously failed

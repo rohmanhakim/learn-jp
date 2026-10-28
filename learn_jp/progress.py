@@ -523,10 +523,10 @@ class ProgressTracker:
                     (session_id, violation_count, violation_rate, result.date),
                 )
 
-            conn.commit()
+            # 5. Level progression (inside the write transaction)
+            self._check_level_progression(conn, events)
 
-        # 5. Level progression (read-only, outside the write transaction)
-        self._check_level_progression(events)
+            conn.commit()
 
         return SessionSummary(
             session_id=session_id,
@@ -652,18 +652,58 @@ class ProgressTracker:
                     )
                 )
 
-    def _check_level_progression(self, events: list[KernelEvent]) -> None:
-        """Append a level_up event when the threshold is met."""
+    def _check_level_progression(
+        self, conn: sqlite3.Connection, events: list[KernelEvent]
+    ) -> None:
+        """Persist a level promotion when the threshold is met.
+
+        Runs inside ``record_session``'s write transaction so the level
+        change is atomic with the session's mastery updates.  Grammar is
+        only considered when at least one grammar item exists for the
+        level; otherwise a brand-new level can still progress on vocab
+        alone.
+        """
         threshold = float(self.get_config("level_threshold", "0.8"))
-        status = self.get_status()
-        if (
-            status.vocab_percent >= threshold * 100
-            and status.grammar_percent >= threshold * 100
-        ):
+        level = self.get_config("current_level", "n5")
+        next_level = self._next_level(level)
+
+        total = conn.execute(
+            "SELECT COUNT(*) AS c FROM vocabulary WHERE level = ?", (level,)
+        ).fetchone()["c"]
+        mastered = conn.execute(
+            """SELECT COUNT(*) AS c FROM mastery m
+               JOIN vocabulary v ON m.item_id = v.item_id
+               WHERE v.level = ? AND m.status = 'mastered'""",
+            (level,),
+        ).fetchone()["c"]
+        vocab_percent = (mastered / total * 100) if total > 0 else 0.0
+
+        g_total = conn.execute(
+            "SELECT COUNT(*) AS c FROM grammar_progress WHERE level = ?",
+            (level,),
+        ).fetchone()["c"]
+        g_mastered = conn.execute(
+            """SELECT COUNT(*) AS c FROM grammar_progress
+               WHERE level = ? AND status = 'mastered'""",
+            (level,),
+        ).fetchone()["c"]
+        grammar_percent = (g_mastered / g_total * 100) if g_total > 0 else 0.0
+
+        vocab_ok = vocab_percent >= threshold * 100
+        grammar_ok = g_total == 0 or grammar_percent >= threshold * 100
+
+        if vocab_ok and grammar_ok:
+            conn.execute(
+                """INSERT INTO user_config (key, value, updated_at)
+                   VALUES ('current_level', ?, datetime('now'))
+                   ON CONFLICT(key) DO UPDATE
+                   SET value = excluded.value, updated_at = datetime('now')""",
+                (next_level,),
+            )
             events.append(
                 KernelEvent(
                     type="level_up",
-                    detail=f"ready for {self._next_level(status.level)}",
+                    detail=f"promoted {level} → {next_level}",
                 )
             )
 
