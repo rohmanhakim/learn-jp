@@ -452,27 +452,27 @@ print(ss.get_today_suggestion('n5'))
 ## Checklist
 
 ### Core Progress Tracking
-- [ ] Create ProgressTracker class
+- [x] Create ProgressTracker class (`learn_jp/progress.py`)
 - [ ] Create StudySuggester class
 - [ ] Create ProgressReporter class
-- [ ] Test mastery detection
-- [ ] Test regression detection
-- [ ] Test study suggestions
-- [ ] Test progress reports
+- [x] Test mastery detection (unit-tested, 15 tests pass)
+- [x] Test regression detection (unit-tested, 15 tests pass)
+- [ ] Test study suggestions (no StudySuggester yet)
+- [ ] Test progress reports (no ProgressReporter yet)
 
 ### New Requirements (from WORKFLOW-FINDINGS.md)
-- [ ] Add grammar_progress table to schema
-- [ ] Add grammar_question_cache table to schema
-- [ ] Add grammar_sessions table to schema
-- [ ] Add writing_sessions table to schema
-- [ ] Add session_violations table to schema
-- [ ] Add user_config table to schema
-- [ ] Implement grammar mastery tracking
+- [x] Add grammar_progress table to schema
+- [x] Add grammar_question_cache table to schema
+- [x] Add grammar_sessions table to schema
+- [x] Add writing_sessions table to schema
+- [x] Add session_violations table to schema
+- [x] Add user_config table to schema
+- [ ] Implement grammar mastery tracking (grammar table empty; no engine yet)
 - [ ] Implement reading comprehension tracking
 - [ ] Implement writing practice tracking
 - [ ] Implement violation history tracking
-- [ ] Implement level progression logic
-- [ ] Add configurable threshold (default 80%)
+- [x] Implement level progression logic (`ProgressTracker._check_level_progression`)
+- [x] Add configurable threshold (default 80%)
 
 ---
 

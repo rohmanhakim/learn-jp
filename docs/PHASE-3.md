@@ -387,20 +387,20 @@ Streak: 12 days
 
 ## Checklist
 
-- [ ] Create `learn_jp/session.py` - SessionManager class
-- [ ] Create `learn_jp/errors.py` - ErrorHandler class
-- [ ] Create `learn_jp/progression.py` - LevelProgression class
-- [ ] Implement `learn-jp start` command
-- [ ] Implement `learn-jp end` command
-- [ ] Implement `learn-jp status` command
-- [ ] Add pre-flight checks (Anki, database)
-- [ ] Implement automatic session recording
-- [ ] Implement mastery calculation
-- [ ] Implement level progression checks
-- [ ] Add database tables for config and violations
-- [ ] Test CLI commands end-to-end
+- [x] Create `learn_jp/session.py` - SessionManager class
+- [x] Create `learn_jp/errors.py` - ErrorHandler class
+- [ ] Create `learn_jp/progression.py` - LevelProgression class (logic folded into `learn_jp/progress.py`)
+- [x] Implement `learn-jp start` command
+- [x] Implement `learn-jp end` command
+- [x] Implement `learn-jp status` command
+- [x] Add pre-flight checks (Anki, database)
+- [x] Implement automatic session recording
+- [x] Implement mastery calculation
+- [x] Implement level progression checks
+- [x] Add database tables for config and violations
+- [ ] Test CLI commands end-to-end (unit tests pass; live AnkiConnect E2E pending)
 - [ ] Test error handling (Anki offline)
-- [ ] Test level progression
+- [x] Test level progression (unit-tested via `tests/test_progress.py`)
 
 ---
 

@@ -453,14 +453,14 @@ python scripts/add_vocab.py --words "勉強する,宿題,先生" --dry-run
 - [ ] Handle errors gracefully (push_anki batch fallback + missing-KANJIDIC degradation)
 
 ### CLI Entry Point (NEW)
-- [ ] Create `learn_jp/cli.py` - main CLI module
-- [ ] Implement `learn-jp start` - pre-flight checks, show deck info
-- [ ] Implement `learn-jp end` - pull reviews, calculate mastery, show summary
-- [ ] Implement `learn-jp status` - show progress, mastery, next steps
-- [ ] Implement `learn-jp story` - generate story + comprehension test
-- [ ] Implement `learn-jp config` - view/set configuration
-- [ ] Add pyproject.toml entry point for CLI
-- [ ] Test CLI commands end-to-end
+- [x] Create `learn_jp/cli.py` - main CLI module
+- [x] Implement `learn-jp start` - pre-flight checks, show deck info
+- [x] Implement `learn-jp end` - pull reviews, calculate mastery, show summary
+- [x] Implement `learn-jp status` - show progress, mastery, next steps
+- [ ] Implement `learn-jp story` - generate story + comprehension test (Phase 6)
+- [x] Implement `learn-jp config` - view/set configuration
+- [x] Add pyproject.toml entry point for CLI
+- [ ] Test CLI commands end-to-end (unit tests pass; live AnkiConnect E2E pending)
 
 ### Data-layer implementation notes (A1–A6, complete)
 

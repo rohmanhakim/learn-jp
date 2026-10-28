@@ -99,9 +99,9 @@ $ learn-jp write    # Writing practice
 |-------|-------|--------|
 | **0** | Refactor story generator to package | ✅ Complete |
 | **1** | Foundation (DB, repo, AnkiConnect) | ✅ Complete |
-| **2** | Content pipeline + CLI entry point | 🔄 In Progress |
-| **3** | CLI workflow (start/end/status) | ⬜ Pending |
-| **4** | Progress tracking + level progression | ⬜ Pending |
+| **2** | Content pipeline + CLI entry point | 🔄 In Progress (near complete) |
+| **3** | CLI workflow (start/end/status) | 🔄 In Progress (core done) |
+| **4** | Progress tracking + level progression | 🔄 In Progress (kernel done) |
 | **5** | Grammar system (three-tier) | ⬜ Pending |
 | **6** | Reading comprehension + writing | ⬜ Pending |
 
