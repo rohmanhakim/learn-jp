@@ -77,6 +77,11 @@ class AnkiConnector:
         result = self._request("getDeckStats", decks=deck_names)
         return result.get("result", {})
     
+    def cards_info(self, card_ids: List[int]) -> List[dict]:
+        """Get info about cards, including the note id each card belongs to."""
+        result = self._request("cardsInfo", cards=card_ids)
+        return result.get("result", [])
+
     def get_reviews(self, days: int = 30) -> dict:
         """Get review history."""
         result = self._request("getReviews", days=days)
