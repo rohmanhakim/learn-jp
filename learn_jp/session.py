@@ -98,39 +98,78 @@ class SessionManager:
     # end
     # ------------------------------------------------------------------ #
     def end_session(self) -> EndResult:
-        """Pull today's reviews from Anki, record via kernel, return summary."""
+        """Pull today's reviews from Anki, record via kernel, return summary.
+
+        Flow::
+
+            notes_info(our linked notes)  -> card IDs
+            get_reviews_of_cards(card_ids)  -> {card_id: [reviews]}
+            filter to last N days
+            card -> note -> item_id (via our DB back-links)
+            record_session(...) -> mastery + level progression
+
+        The upstream ``getReviews`` AnkiConnect action is unsupported, so we
+        use ``notesInfo`` + ``getReviewsOfCards`` (both supported) instead.
+        """
         checks: PreFlightResult = self.error_handler.pre_flight_check()
         if not checks.success:
             return EndResult(aborted=True, errors=list(checks.errors))
 
-        raw = self.anki.get_reviews(days=1)
-        entries = self._flatten_reviews(raw)
+        note_to_item = self._build_note_item_map()
+        if not note_to_item:
+            return EndResult(no_reviews=True, unmapped=0)
+
+        note_ids = [int(nid) for nid in note_to_item.keys()]
+
+        # Resolve note IDs -> card IDs via notesInfo; build card->note map.
+        card_to_note: dict[int, int] = {}
+        card_ids: list[int] = []
+        for info in self.anki.notes_info(note_ids):
+            nid = info.get("noteId")
+            if nid is None:
+                continue
+            for c in info.get("cards", []):
+                cid = int(c)
+                card_to_note[cid] = int(nid)
+                card_ids.append(cid)
+
+        if not card_ids:
+            return EndResult(no_reviews=True, unmapped=0)
+
+        # Pull reviews for our cards (getReviewsOfCards is supported).
+        reviews_by_card = self.anki.get_reviews_of_cards(card_ids) or {}
+
+        # Flatten to entries, filtering to the last N days.
+        # Note: each review entry's "time" field is seconds-from-midnight,
+        # not a unix timestamp.  Use "id" (unix ms) for the day cutoff.
+        cutoff_ms = int(
+            (datetime.now().timestamp() - (1 * 86400)) * 1000
+        )
+        entries: list[dict] = []
+        for card_id, reviews in reviews_by_card.items():
+            for rev in (reviews or []):
+                rev_time_ms = rev.get("id", 0)
+                if rev_time_ms >= cutoff_ms:
+                    entries.append(
+                        {
+                            "cid": int(card_id),
+                            "ease": rev.get("ease"),
+                            "type": rev.get("type"),
+                            "time": rev.get("time"),
+                        }
+                    )
 
         if not entries:
             return EndResult(no_reviews=True)
-
-        note_to_item = self._build_note_item_map()
-
-        # Resolve card ids -> note ids via AnkiConnect cardsInfo so we can
-        # map each review back to a vocabulary item_id.
-        cid_to_nid: dict[int, int] = {}
-        card_ids = [int(e["cid"]) for e in entries if e.get("cid") is not None]
-        if card_ids:
-            for card in self.anki.cards_info(card_ids):
-                cid = card.get("cid")
-                nid = card.get("note")
-                if cid is not None and nid is not None:
-                    cid_to_nid[int(cid)] = int(nid)
 
         item_reviews: list[ItemReview] = []
         unmapped = 0
         for entry in entries:
             cid = entry.get("cid")
-            note_id = cid_to_nid.get(int(cid)) if cid is not None else None
+            note_id = card_to_note.get(int(cid)) if cid is not None else None
             if note_id is None:
                 unmapped += 1
                 continue
-
             item_id = note_to_item.get(str(note_id))
             if item_id is None:
                 unmapped += 1

@@ -1,6 +1,8 @@
 """Tests for SessionManager orchestration (learn_jp/session.py)."""
 from __future__ import annotations
 
+import time
+
 import pytest
 
 from learn_jp.session import SessionManager
@@ -9,9 +11,11 @@ from learn_jp.progress import ItemReview, SessionResult
 
 
 class StubAnki:
-    def __init__(self, reviews=None, cards=None, available=True):
+    def __init__(self, reviews=None, notes=None, available=True):
+        # reviews: {card_id: [{"cid":..., "ease":..., "type":..., "time":...}]}
         self._reviews = reviews or {}
-        self._cards = cards or []
+        # notes: {note_id: {"noteId":..., "cards": [...]}}
+        self._notes = notes or {}
         self.available = available
         self.calls = []
 
@@ -21,13 +25,17 @@ class StubAnki:
     def version(self):
         return 1 if self.available else None
 
-    def get_reviews(self, days=1):
-        self.calls.append(("get_reviews", days))
-        return self._reviews
+    def notes_info(self, note_ids):
+        self.calls.append(("notes_info", note_ids))
+        return [self._notes.get(nid, {}) for nid in note_ids]
+
+    def get_reviews_of_cards(self, card_ids):
+        self.calls.append(("get_reviews_of_cards", card_ids))
+        return {str(cid): self._reviews.get(int(cid), []) for cid in card_ids}
 
     def cards_info(self, card_ids):
         self.calls.append(("cards_info", card_ids))
-        return self._cards
+        return []
 
 
 class StubErrorHandler:
@@ -92,8 +100,8 @@ def test_end_session_maps_reviews_to_items(temp_db_path, tracker):
         )
         conn.commit()
     anki = StubAnki(
-        reviews={"2026-01-01": [{"cid": 100, "type": 2, "ease": 3, "time": 1200}]},
-        cards=[{"cid": 100, "note": 42}],
+        reviews={100: [{"cid": 100, "type": 2, "ease": 3, "id": int(time.time() * 1000), "time": 1200}]},
+        notes={42: {"noteId": 42, "cards": [100]}},
     )
     eh = StubErrorHandler()
     mgr = SessionManager(db_path=temp_db_path, anki=anki, error_handler=eh)
@@ -107,10 +115,19 @@ def test_end_session_maps_reviews_to_items(temp_db_path, tracker):
     assert res.summary.correct == 1  # ease 3 (good) -> severity 1 -> correct
 
 
-def test_end_session_unmapped_review(temp_db_path, tracker):
+def test_end_session_deleted_anki_note(temp_db_path, tracker):
+    """Linked vocabulary item whose Anki note was deleted (notes_info returns
+    no cards) should not crash; we report no reviews."""
+    with tracker._connect() as conn:
+        conn.execute(
+            """INSERT INTO vocabulary
+               (item_id, content, reading, meaning, level, anki_note_id)
+               VALUES ('item1', 'x', 'よみ', 'm', 'n5', 1)""",
+        )
+        conn.commit()
     anki = StubAnki(
-        reviews={"2026-01-01": [{"cid": 999, "type": 2, "ease": 3, "time": 100}]},
-        cards=[{"cid": 999, "note": 777}],  # note 777 not in vocabulary
+        reviews={},
+        notes={1: {}},  # note 1 deleted from Anki — no cards returned
     )
     eh = StubErrorHandler()
     mgr = SessionManager(db_path=temp_db_path, anki=anki, error_handler=eh)
@@ -118,8 +135,8 @@ def test_end_session_unmapped_review(temp_db_path, tracker):
     res = mgr.end_session()
 
     assert res.aborted is False
-    assert res.unmapped == 1
-    assert res.summary.items_studied == 0
+    assert res.no_reviews is True
+    assert res.summary is None
 
 
 def test_end_session_promotes_on_threshold(temp_db_path, tracker):
@@ -149,8 +166,8 @@ def test_end_session_promotes_on_threshold(temp_db_path, tracker):
 
     # One mapped review drives record_session -> level-progression check.
     anki = StubAnki(
-        reviews={"2026-01-08": [{"cid": 100, "type": 2, "ease": 3, "time": 100}]},
-        cards=[{"cid": 100, "note": 1}],
+        reviews={100: [{"cid": 100, "type": 2, "ease": 3, "id": int(time.time() * 1000), "time": 100}]},
+        notes={1: {"noteId": 1, "cards": [100]}},
     )
     eh = StubErrorHandler()
     mgr = SessionManager(db_path=temp_db_path, anki=anki, error_handler=eh)

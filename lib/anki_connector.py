@@ -83,9 +83,37 @@ class AnkiConnector:
         return result.get("result", [])
 
     def get_reviews(self, days: int = 30) -> dict:
-        """Get review history."""
+        """Get review history.
+
+        .. deprecated::
+            The upstream ``getReviews`` AnkiConnect action is unsupported in
+            current AnkiConnect versions.  Use :meth:`get_reviews_of_cards`
+            instead, which is backed by the supported ``getReviewsOfCards``
+            action.
+        """
         result = self._request("getReviews", days=days)
         return result.get("result", {})
+
+    def get_reviews_of_cards(self, card_ids: list[int]) -> dict[int, list[dict]]:
+        """Get review history for specific cards via ``getReviewsOfCards``.
+
+        Parameters
+        ----------
+        card_ids:
+            List of Anki card IDs.
+
+        Returns
+        -------
+        dict
+            Mapping of ``card_id -> [review entries]``.  Each review entry
+            contains at least ``cid``, ``ease`` (1=again,2=hard,3=good,4=easy),
+            ``type`` (0=learn,1=relearn,2=review,3=cram), and ``time`` (unix
+            timestamp).  Empty when a card has no review history.
+        """
+        if not card_ids:
+            return {}
+        result = self._request("getReviewsOfCards", cards=card_ids)
+        return result.get("result", {}) or {}
     
     def is_available(self) -> bool:
         """Check if Anki is running and AnkiConnect is available."""
